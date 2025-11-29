@@ -1,10 +1,14 @@
 """User model for storing Telegram user information and settings."""
 
+from typing import TYPE_CHECKING
+
 from sqlalchemy import BigInteger, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.database.models.account import Account
 from app.database.models.base import Base, TimestampMixin
+
+if TYPE_CHECKING:
+    from app.database.models.account import Account
 
 
 class User(Base, TimestampMixin):
