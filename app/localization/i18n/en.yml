@@ -1,0 +1,125 @@
+## Emojis
+folderEmoji: "📁"
+fileEmoji: "📄"
+videoEmoji: "📹"
+audioEmoji: "🎵"
+
+## Buttons
+logoutBtn: "Log Out 🚪"
+accountsBtn: 🗂️ Accounts
+accountInfoBtn: 👤 My Account
+activeTorrentsBtn: ⌛ Active Torrents
+backBtn: 🔙 Back
+cancelBtn: ❌ Cancel
+cancelDownloadBtn: ❌ Cancel download
+loginBtn: ➕ Log In
+addAccountBtn: ➕ Add another account
+infoBtn: ℹ️ Info
+statisticsBtn: "📊 Statistics"
+switchBtn: 🔃 Switch
+doneBtn: ✅ Done
+fileManagerBtn: 📂 File Manager
+vlcBtn: "VLC"
+m3uBtn: "M3U"
+xspfBtn: "XSPF"
+loginWithEmailBtn: 📧 Login with email/password
+openInPlayerBtn: ▶️ Open in media player
+playlistBtn: "▶️ Play"
+authorizeWithDeviceBtn: 📱 Authorize with device (Recommended)
+refreshBtn: 🔄 Refresh
+getLinkBtn: 🔗 Download link
+signupBtn: ➕ Sign up
+previousBtn: "◀️ Previous"
+nextBtn: "Next ▶️"
+downloadFileBtn: "⬇️ Download File"
+downloadFolderBtn: "📦 Download Folder"
+yesBtn: ✅ Yes
+noBtn: ❌ No
+
+## Labels
+rootLabel: "Root"
+foldersLabel: "Folders"
+filesLabel: "Files"
+totalSizeLabel: "Total Size"
+openLabel: "Open"
+viewLabel: "View"
+videoLabel: "Video"
+audioLabel: "Audio"
+fileLabel: "File"
+sizeLabel: "Size"
+typeLabel: "Type"
+downloadUrlLabel: "Download URL"
+clickToDownloadLabel: "Click to download"
+failedToDeleteFileLabel: "Failed to delete file"
+failedToDeleteFolderLabel: "Failed to delete folder"
+downloadLinkLabel: "Download Link"
+folderDownloadLinkLabel: "Folder Download Link"
+clickToDownloadFolderArchiveLabel: "Click here to download folder archive"
+totalAccountsLabel: "Total Accounts"
+seedrArchiveNote: "Note: Seedr will create a zip archive of this folder"
+totalUsersLabel: "Total users:"
+usernameLabel: "Username:"
+emailLabel: "Email:"
+premiumLabel: "Premium:"
+storageLabel: "Storage"
+usedLabel: "Used:"
+bandwidthUsedLabel: "Bandwidth Used (monthly):"
+invitesAvailableLabel: "Invites available:"
+referralLinkLabel: "Referral Link:"
+pageLabel: "Page"
+speedLabel: "Speed"
+etaLabel: "ETA"
+
+## Strings
+loginMessage: "Please choose a method to log in to your Seedr account."
+welcomeMessage: "Welcome to the Seedr bot! If you already have an account, please log in. If not, you can sign up."
+alreadyActive: ✅ This account is already active.
+alreadyDownloading: |
+  🥴 The torrent is already downloading. Please see the status in active torrents list or by clicking /active.
+accountRemoved: ➖ Account removed successfully.
+authorize: |
+  ️ <b>Please follow the instructions to authorize your account</b>
+
+  • Go to https://seedr.cc/devices
+  • Login your account if not logged in
+  • Paste the following code (Click to copy)
+
+  <b>CODE: <code>{code}</code></b>
+
+  • Click the <b>✅ Done</b> button after completion.
+cancelled: ❌ Cancelled
+cancelledSuccessfully: 🙌 The selected download is cancelled.
+cancellingDownload: ❌ Cancelling download
+confirmLogout: "⚠️ Confirm Logout"
+confirmLogoutAccount: "Are you sure you want to log out of the account: {username}?"
+actionCannotBeUndoneLogout: "Note: This will only log you out of this bot, not delete your Seedr account. You can add the account again later."
+deletedSuccessfully: 🙌  The selected item is deleted successfully.
+greet: 👋 Welcome to the seedr bot.
+noAccount: ⚠️ You don't have any account logged in.
+noPermission: ⚠️ You don't have permission to execute this command.
+tokenExpired: 😬 Your account token has expired. Please add your account again.
+somethingWrong: ⚠️ Something went wrong. Please try again later or contact the developer.
+accountNotFound: ⚠️ Account not found.
+accountSwitched: "✅ Switched to {username}."
+enterEmail: ✉️ Enter your account email address.
+enterPasswordFor: "🔑 Enter your account password for <b>{email}</b>."
+loggingIn: ⟳ Logging in...
+loggedInAs: "💫 Successfully logged in as {username}."
+incorrectPassword: ⚠️ The email and password do not match. Please try again.
+authFailed: "⚠️ Authentication failed: {error}"
+processFailed: ⚠️ Failed to process your request. Please try again.
+openInMediaCaption: |
+  Click the icon above and the media shall start playing in your default player.
+
+  <code>Install VLC media player for better performance.</code>
+
+  <b>⚠️ If failed to play, please choose a different file extension by clicking the button below.</b>
+noPlayableMedia: ⚠️ This folder doesn't contain any playable media.
+noActiveTorrents: 🤝 You don't have any active torrents.
+torrentAddedSuccessfully: 🙌 The torrent is added successfully to the download queue.
+torrentFileUploadNotSupported: ⚠️ Torrent file upload is not supported yet.
+noMultipleAccounts: ⚠️ You don't have multiple accounts to switch.
+accountSwitchedAlert: "Account switched!"
+conversationTimeout: "Conversation timed out. Please try again."
+fileTooLarge: "⚠️ The torrent file is too large. Please upload a file smaller than {max_size} MB."
+signupMessage: "Click the button below to create a new Seedr account."
