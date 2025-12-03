@@ -7,7 +7,7 @@ from typing import Any
 from seedrcc import AsyncSeedr, Token
 from seedrcc.exceptions import APIError, AuthenticationError, SeedrError
 from structlog import get_logger
-from telethon import events
+from telethon import events, errors
 
 from app.database import get_session
 from app.database.repository import AccountRepository, UserRepository
@@ -97,6 +97,10 @@ def setup_handler(require_auth: bool = False):
                     else:
                         await event.respond(error_message)
                 logger.error(f"APIError/SeedrError in {func.__name__}: {e}", exc_info=True)
+                raise events.StopPropagation()
+
+            except errors.AlreadyInConversationError:
+                logger.warning(f"AlreadyInConversationError in {func.__name__}")
                 raise events.StopPropagation()
 
             except Exception as e:
