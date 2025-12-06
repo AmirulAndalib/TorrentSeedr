@@ -6,7 +6,6 @@ from telethon import events
 from app.bot.decorators import setup_handler
 from app.bot.views.navigation_view import (
     render_file_details_message,
-    render_files_message,
     render_folder_contents_message,
 )
 from app.database.models import User

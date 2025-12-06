@@ -41,3 +41,4 @@ async def active_handler(
         await event.edit(view.message, buttons=view.buttons)
     else:
         await event.respond(view.message, buttons=view.buttons)
+
