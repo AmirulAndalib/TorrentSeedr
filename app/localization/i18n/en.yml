@@ -1,9 +1,9 @@
 ## Emojis
-folderEmoji: "📁"
-fileEmoji: "📄"
-videoEmoji: "🎬"
-audioEmoji: "🎵"
-activeAccountEmoji: "✅"
+folderEmoji: 📁
+fileEmoji: 📄
+videoEmoji: 🎬
+audioEmoji: 🎵
+activeAccountEmoji: ✅
 
 ## Buttons
 accountsBtn: 🗂️ Accounts
@@ -19,51 +19,51 @@ deleteBtn: ⛔ Delete
 doneBtn: ✅ Done
 fileManagerBtn: 📂 File Manager
 getLinkBtn: 🔗 Download Link
-vlcBtn: "VLC"
-m3uBtn: "M3U"
-xspfBtn: "XSPF"
+vlcBtn: VLC
+m3uBtn: M3U
+xspfBtn: XSPF
 loginWithEmailBtn: 📧 Login with email/password
-playlistBtn: "▶️ Play"
+playlistBtn: ▶️ Play
 authorizeWithDeviceBtn: 📱 Authorize with device (Recommended)
 signupBtn: 🚀 Sign up
-previousBtn: "◀️ Previous"
-nextBtn: "Next ▶️"
-downloadFileBtn: "⬇️ Download File"
-downloadFolderBtn: "📦 Download Folder"
+previousBtn: ◀️ Previous
+nextBtn: Next ▶️
+downloadFileBtn: ⬇️ Download File
+downloadFolderBtn: 📦 Download Folder
 yesBtn: ✅ Yes
 noBtn: ❌ No
 
 ## Labels
-rootLabel: "Root"
-foldersLabel: "Folders"
-filesLabel: "Files"
-yesLabel: "yes"
-noLabel: "No"
-totalSizeLabel: "Total Size"
-videoLabel: "Video"
-audioLabel: "Audio"
-fileLabel: "File"
-sizeLabel: "Size"
-typeLabel: "Type"
-downloadLinkLabel: "Download Link"
-folderDownloadLinkLabel: "Folder Download Link"
-totalAccountsLabel: "Total Accounts"
+rootLabel: Root
+foldersLabel: Folders
+filesLabel: Files
+yesLabel: yes
+noLabel: No
+totalSizeLabel: Total Size
+videoLabel: Video
+audioLabel: Audio
+fileLabel: File
+sizeLabel: Size
+typeLabel: Type
+downloadLinkLabel: Download Link
+folderDownloadLinkLabel: Folder Download Link
+totalAccountsLabel: Total Accounts
 usernameLabel: "Username:"
 emailLabel: "Email:"
 premiumLabel: "Premium:"
-storageLabel: "Storage"
+storageLabel: Storage
 usedLabel: "Used:"
 bandwidthUsedLabel: "Bandwidth Used (monthly):"
 invitesAvailableLabel: "Invites available:"
 referralLinkLabel: "Referral Link:"
-pageLabel: "Page"
-speedLabel: "Speed"
-etaLabel: "ETA"
+pageLabel: Page
+speedLabel: Speed
+etaLabel: ETA
 
 ## Messages
 selectLanguage: "Please select your preferred language:"
-loginMessage: "Please choose a method to log in to your Seedr account."
-welcomeMessage: "Welcome to the seedr bot! If you already have an account, please log in. If not, you can sign up."
+loginMessage: Please choose a method to log in to your Seedr account.
+welcomeMessage: Welcome to the seedr bot! If you already have an account, please log in. If not, you can sign up.
 alreadyActive: ✅ This account is already active.
 accountRemoved: ➖ Account removed successfully.
 authorize: |
@@ -77,7 +77,7 @@ authorize: |
 
   • Click the <b>✅ Done</b> button after completion.
 cancelled: ❌ Cancelled
-confirmLogout: "⚠️ Confirm Logout"
+confirmLogout: ⚠️ Confirm Logout
 confirmLogoutAccount: "Are you sure you want to log out of the account: {username}?"
 actionCannotBeUndoneLogout: "Note: This will only log you out of this bot, not delete your Seedr account. You can add the account again later."
 deletedSuccessfully: 🙌  The selected item is deleted successfully.
@@ -86,11 +86,11 @@ noAccount: ⚠️ You don't have any account logged in.
 tokenExpired: 😬 Your account token has expired. Please add your account again.
 somethingWrong: ⚠️ Something went wrong. Please try again later or contact the developer.
 accountNotFound: ⚠️ Account not found.
-accountSwitched: "✅ Switched to {username}."
+accountSwitched: ✅ Switched to {username}.
 enterEmail: ✉️ Enter your account email address.
-enterPasswordFor: "🔑 Enter your account password for <b>{email}</b>."
+enterPasswordFor: 🔑 Enter your account password for <b>{email}</b>.
 loggingIn: ⟳ Logging in...
-loggedInAs: "💫 Successfully logged in as {username}."
+loggedInAs: 💫 Successfully logged in as {username}.
 incorrectPassword: ⚠️ The email and password do not match. Please try again.
 authFailed: "⚠️ Authentication failed: {error}"
 openInMediaCaption: |
@@ -103,8 +103,8 @@ noPlayableMedia: ⚠️ This folder doesn't contain any playable media.
 noActiveDownloads: 🤝 You don't have any active downloads.
 torrentAddedSuccessfully: 🙌 The torrent is added successfully to the download queue.
 torrentFileUploadNotSupported: ⚠️ Torrent file upload is not supported yet.
-conversationTimeout: "Conversation timed out. Please try again."
-fileTooLarge: "⚠️ The torrent file is too large. Please upload a file smaller than {max_size} MB."
-signupMessage: "Click the button below to create a new Seedr account."
-cannotDetermineFolder: "⚠️ Could not determine the file's folder. Cannot show details."
-fileNotFound: "⚠️ File not found in the folder."
+conversationTimeout: Conversation timed out. Please try again.
+fileTooLarge: ⚠️ The torrent file is too large. Please upload a file smaller than {max_size} MB.
+signupMessage: Click the button below to create a new Seedr account.
+cannotDetermineFolder: ⚠️ Could not determine the file's folder. Cannot show details.
+fileNotFound: ⚠️ File not found in the folder.
