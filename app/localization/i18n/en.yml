@@ -1,7 +1,7 @@
 ## Emojis
 folderEmoji: "📁"
 fileEmoji: "📄"
-videoEmoji: "📹"
+videoEmoji: "🎬"
 audioEmoji: "🎵"
 deleteEmoji: "🚪"
 activeAccountEmoji: "✅"
@@ -15,8 +15,10 @@ cancelBtn: ❌ Cancel
 loginBtn: ➕ Log In
 addAccountBtn: ➕ Add another account
 infoBtn: ℹ️ Info
+deleteBtn: ⛔ Delete
 doneBtn: ✅ Done
 fileManagerBtn: 📂 File Manager
+getLinkBtn: 🔗 Download Link
 vlcBtn: "VLC"
 m3uBtn: "M3U"
 xspfBtn: "XSPF"
