@@ -40,6 +40,8 @@ noBtn: ❌ No
 rootLabel: "Root"
 foldersLabel: "Folders"
 filesLabel: "Files"
+yesLabel: "yes"
+noLabel: "No"
 totalSizeLabel: "Total Size"
 openLabel: "Open"
 viewLabel: "View"
