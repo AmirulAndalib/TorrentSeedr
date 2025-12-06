@@ -24,3 +24,55 @@ def render_login_message(translator: Translator) -> ViewResponse:
         ],
     ]
     return ViewResponse(message=message, buttons=buttons)
+
+
+def render_enter_email(translator: Translator) -> ViewResponse:
+    """Render the enter email message."""
+    keyboard = [[Button.text(translator.get("cancelBtn"), resize=True)]]
+    return ViewResponse(message=translator.get("enterEmail"), buttons=keyboard)
+
+
+def render_enter_password_for(email: str, translator: Translator) -> ViewResponse:
+    """Render the enter password for message."""
+    message = translator.get("enterPasswordFor").format(email=email)
+    keyboard = [[Button.text(translator.get("cancelBtn"), resize=True)]]
+    return ViewResponse(message=message, buttons=keyboard)
+
+
+def render_logging_in(translator: Translator) -> ViewResponse:
+    """Render the logging in message."""
+    return ViewResponse(message=translator.get("loggingIn"))
+
+
+def render_logged_in(username: str, translator: Translator) -> ViewResponse:
+    """Render the logged in message."""
+    keyboard = [
+        [
+            Button.text(translator.get("fileManagerBtn"), resize=True),
+            Button.text(translator.get("activeDownloadsBtn"), resize=True),
+        ],
+        [
+            Button.text(translator.get("infoBtn"), resize=True),
+            Button.text(translator.get("accountsBtn"), resize=True),
+        ],
+    ]
+    message = translator.get("loggedInAs").format(username=username)
+    return ViewResponse(message=message, buttons=keyboard)
+
+
+def render_incorrect_password(translator: Translator) -> ViewResponse:
+    """Render the incorrect password message."""
+    return ViewResponse(message=translator.get("incorrectPassword"))
+
+
+def render_authorize_device(device_code: str, user_code: str, translator: Translator) -> ViewResponse:
+    """Render the authorize device message."""
+    buttons = [[Button.inline(translator.get("doneBtn"), f"auth_complete_{device_code}".encode())]]
+    message = translator.get("authorize").format(code=user_code)
+    return ViewResponse(message=message, buttons=buttons)
+
+
+def render_auth_failed(error: str, translator: Translator) -> ViewResponse:
+    """Render the auth failed message."""
+    message = translator.get("authFailed").format(error=error)
+    return ViewResponse(message=message)
