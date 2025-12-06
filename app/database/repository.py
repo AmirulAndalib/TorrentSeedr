@@ -74,9 +74,11 @@ class AccountRepository:
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def get_by_id(self, account_id: int) -> Account | None:
-        """Get account by ID."""
-        result = await self.session.execute(select(Account).where(Account.id == account_id))
+    async def get_by_id(self, account_id: int, user_id: int) -> Account | None:
+        """Get account by ID, filtered by user_id for security."""
+        result = await self.session.execute(
+            select(Account).where(Account.id == account_id, Account.user_id == user_id)
+        )
         return result.scalar_one_or_none()
 
     async def get_by_user_id(self, user_id: int) -> list[Account]:
@@ -114,9 +116,9 @@ class AccountRepository:
         await self.session.flush()
         return account
 
-    async def update_token(self, account_id: int, token: str) -> Account | None:
+    async def update_token(self, account_id: int, user_id: int, token: str) -> Account | None:
         """Update account token."""
-        account = await self.get_by_id(account_id)
+        account = await self.get_by_id(account_id, user_id)
         if not account:
             return None
 
@@ -124,9 +126,9 @@ class AccountRepository:
         await self.session.flush()
         return account
 
-    async def delete(self, account_id: int) -> bool:
+    async def delete(self, account_id: int, user_id: int) -> bool:
         """Delete an account."""
-        account = await self.get_by_id(account_id)
+        account = await self.get_by_id(account_id, user_id)
         if not account:
             return False
 

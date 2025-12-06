@@ -49,12 +49,12 @@ def setup_handler(require_auth: bool = False):
                         if not user.default_account_id:
                             raise NoAccountError(translator.get("noAccount"))
 
-                        account = await AccountRepository(session).get_by_id(user.default_account_id)
+                        account = await AccountRepository(session).get_by_id(user.default_account_id, user.id)
                         if not account:
                             raise NoAccountError(translator.get("noAccount"))
 
                         token_instance = Token.from_base64(account.token)
-                        callback = functools.partial(on_token_refresh, account_id=account.id)
+                        callback = functools.partial(on_token_refresh, account_id=account.id, user_id=user.id)
                         seedr_client = AsyncSeedr(token=token_instance, on_token_refresh=callback)
 
                         dependencies["seedr_client"] = seedr_client

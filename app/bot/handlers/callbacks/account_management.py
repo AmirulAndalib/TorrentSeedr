@@ -30,9 +30,9 @@ async def switch_account_callback(
     async with get_session() as session:
         user_repo = UserRepository(session)
         account_repo = AccountRepository(session)
-        account_to_switch = await account_repo.get_by_id(account_id)
+        account_to_switch = await account_repo.get_by_id(account_id, user.id)
 
-        if not account_to_switch or account_to_switch.user_id != user.id:
+        if not account_to_switch:
             view = render_account_not_found(translator)
             await event.edit(view.message, buttons=view.buttons)
             return
@@ -58,14 +58,14 @@ async def logout_account_callback(
 
     async with get_session() as session:
         account_repo = AccountRepository(session)
-        account = await account_repo.get_by_id(account_id)
+        account = await account_repo.get_by_id(account_id, user.id)
 
-        if not account or account.user_id != user.id:
+        if not account:
             view = render_account_not_found(translator)
             await event.edit(view.message, buttons=view.buttons)
             return
 
-        username = account.username or account.email
+        username = account.username or account.email or ""
         view = render_logout_account_confirmation(account_id, username, translator)
         await event.edit(view.message, buttons=view.buttons)
 
@@ -80,25 +80,37 @@ async def confirm_logout_account_callback(
 
     async with get_session() as session:
         account_repo = AccountRepository(session)
-        account = await account_repo.get_by_id(account_id)
+        account = await account_repo.get_by_id(account_id, user.id)
 
-        if not account or account.user_id != user.id:
+        if not account:
             view = render_account_not_found(translator)
             await event.edit(view.message, buttons=view.buttons)
             return
 
         user_repo = UserRepository(session)
-        await account_repo.delete(account_id)
+
+        # Get all accounts before deletion
         accounts = await account_repo.get_by_user_id(user.id)
-        if user.default_account_id == account_id and accounts:
-            await user_repo.update_settings(user.id, default_account_id=accounts[0].id)
-        elif not accounts:
-            await user_repo.update_settings(user.id, default_account_id=None)
-        has_accounts = len(accounts) > 0
+        has_multiple_accounts = len(accounts) >= 2
+
+        # Delete the account
+        await account_repo.delete(account_id, user.id)
+
+        # Update default account if the deleted account was the default
+        if user.default_account_id == account_id:
+            if has_multiple_accounts:
+                new_default = next((acc for acc in accounts if acc.id != account_id), None)
+                if new_default:
+                    await user_repo.update_settings(user.id, default_account_id=new_default.id)
+            else:
+                # Only one account (being deleted), set to None
+                await user_repo.update_settings(user.id, default_account_id=None)
+
+        await session.commit()
 
     await event.answer(translator.get("accountRemoved"), alert=False)
 
-    if has_accounts:
+    if has_multiple_accounts:
         await accounts_handler(event)
     else:
         view = render_no_account(translator)
