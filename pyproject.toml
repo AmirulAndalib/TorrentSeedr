@@ -16,7 +16,7 @@ dependencies = [
   "pydantic-settings>=2.12.0",
   "python-dotenv>=1.2.1",
   "pyyaml>=6.0.3",
-  "seedrcc>=2.0.1",
+  "seedrcc",
   "sqlalchemy>=2.0.44",
   "structlog>=25.5.0",
   "telethon>=1.42.0",
@@ -51,3 +51,6 @@ target-version = "py314"
 [tool.ruff.lint]
 select = ["I", "E", "W", "F", "S", "T201", "N", "UP"]
 ignore = ["E501"]
+
+[tool.uv.sources]
+seedrcc = { git = "https://github.com/hemantapkh/seedrcc" }
