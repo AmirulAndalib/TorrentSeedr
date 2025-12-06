@@ -34,6 +34,13 @@ packages = ["app"]
 sqlite = ["aiosqlite>=0.21.0", "greenlet>=3.2.4"]
 postgresql = ["asyncpg>=0.31.0"]
 mysql = ["aiomysql>=0.3.2"]
+dev = [
+  "aiosqlite>=0.21.0",
+  "greenlet>=3.2.4",
+  "mypy>=1.19.0",
+  "ruff>=0.14.7",
+  "ty>=0.0.1a30",
+]
 
 [dependency-groups]
 dev = [
@@ -43,6 +50,9 @@ dev = [
   "ruff>=0.14.7",
   "ty>=0.0.1a29",
 ]
+mysql = ["aiomysql>=0.3.2"]
+postgres = ["asyncpg>=0.31.0"]
+sqlite = ["aiosqlite>=0.21.0", "greenlet>=3.2.4"]
 
 [tool.ruff]
 line-length = 120
