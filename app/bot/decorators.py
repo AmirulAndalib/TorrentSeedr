@@ -7,13 +7,13 @@ from typing import Any
 from seedrcc import AsyncSeedr, Token
 from seedrcc.exceptions import APIError, AuthenticationError, SeedrError
 from structlog import get_logger
-from telethon import events, errors
+from telethon import errors, events
 
 from app.database import get_session
 from app.database.repository import AccountRepository, UserRepository
+from app.exceptions import NoAccountError
 from app.services.seedr import on_token_refresh
 from app.utils.language import get_language_service
-from app.exceptions import NoAccountError
 
 logger = get_logger(__name__)
 language_service = get_language_service()
