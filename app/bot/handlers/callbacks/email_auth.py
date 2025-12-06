@@ -13,6 +13,7 @@ from app.bot.views.login_view import (
     render_logged_in,
     render_logging_in,
 )
+from app.bot.views.start_view import render_start_message
 from app.database import get_session
 from app.database.models import User
 from app.database.repository import AccountRepository, UserRepository
@@ -24,6 +25,8 @@ async def login_email_callback(event: events.CallbackQuery.Event, user: User, tr
     """Handle email/password login callback."""
     try:
         await event.answer()
+        cancel_text = translator.get("cancelBtn")
+
         async with bot.conversation(user.telegram_id, timeout=300) as conv:
             # Prompt for email address
             view = render_enter_email(translator)
@@ -32,6 +35,13 @@ async def login_email_callback(event: events.CallbackQuery.Event, user: User, tr
             # After getting email response
             email_response = await conv.get_response()
             email = email_response.text.strip()
+
+            if email == cancel_text:
+                view = render_start_message(has_accounts=bool(user.default_account_id), translator=translator)
+                await conv.send_message(translator.get("cancelled"), buttons=view.buttons)
+                conv.cancel()
+                raise events.StopPropagation()
+
             await email_response.delete()
 
             # Prompt for password
@@ -41,6 +51,13 @@ async def login_email_callback(event: events.CallbackQuery.Event, user: User, tr
             # After getting password response
             password_response = await conv.get_response()
             password = password_response.text.strip()
+
+            if password == cancel_text:
+                view = render_start_message(has_accounts=bool(user.default_account_id), translator=translator)
+                await conv.send_message(translator.get("cancelled"), buttons=view.buttons)
+                conv.cancel()
+                raise events.StopPropagation()
+
             await password_response.delete()
 
             view = render_logging_in(translator)
