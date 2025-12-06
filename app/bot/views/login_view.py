@@ -1,4 +1,4 @@
-"""Views for login command."""
+"""Views for login management."""
 
 from telethon import Button
 
@@ -7,6 +7,7 @@ from app.utils.language import Translator
 
 
 def render_login_message(translator: Translator) -> ViewResponse:
+    "Render view for /login"
     message = translator.get("loginMessage")
     buttons = [
         [
