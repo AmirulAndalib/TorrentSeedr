@@ -10,6 +10,7 @@ from app.bot.handlers.commands.active import active_handler
 from app.bot.handlers.commands.files import files_handler
 from app.bot.handlers.commands.info import info_handler
 from app.bot.handlers.commands.login import login_handler
+from app.bot.handlers.commands.signup import signup_handler
 from app.database.models import User
 from app.utils.language import Translator
 
@@ -29,6 +30,7 @@ async def text_message_handler(event: events.NewMessage.Event, user: User, trans
         translator.get("infoBtn"): info_handler,
         translator.get("accountsBtn"): accounts_handler,
         translator.get("loginBtn"): login_handler,
+        translator.get("signupBtn"): signup_handler,
     }
 
     handler = actions.get(text)

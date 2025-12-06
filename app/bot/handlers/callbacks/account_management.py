@@ -11,7 +11,7 @@ from app.bot.views.accounts_view import (
     render_no_account,
 )
 from app.database import get_session
-from app.database.models import Account, User
+from app.database.models import User
 from app.database.repository import AccountRepository, UserRepository
 from app.utils.language import Translator
 
@@ -22,7 +22,6 @@ async def switch_account_callback(
     user: User,
     translator: Translator,
     seedr_client: AsyncSeedr,
-    db_account: Account,
 ):
     """Handle switch to specific account callback."""
     callback_data = event.data.decode()
@@ -42,7 +41,7 @@ async def switch_account_callback(
             await event.answer(translator.get("alreadyActive"), alert=False)
             return
 
-        username = account_to_switch.username or account_to_switch.email or f"Account {account_to_switch.id}"
+        username = account_to_switch.username or account_to_switch.email
         await user_repo.update_settings(user.id, default_account_id=account_to_switch.id)
 
     await event.answer(translator.get("accountSwitched").format(username=username), alert=False)
@@ -51,39 +50,44 @@ async def switch_account_callback(
 
 @setup_handler(require_auth=True)
 async def logout_account_callback(
-    event: events.CallbackQuery.Event, user: User, translator: Translator, db_account: Account
+    event: events.CallbackQuery.Event, user: User, translator: Translator, seedr_client: AsyncSeedr
 ):
     """Handle logout account button - show confirmation."""
     callback_data = event.data.decode()
     account_id = int(callback_data.replace("logout_account_", ""))
 
-    if db_account.id != account_id:
-        view = render_account_not_found(translator)
-        await event.edit(view.message, buttons=view.buttons)
-        return
+    async with get_session() as session:
+        account_repo = AccountRepository(session)
+        account = await account_repo.get_by_id(account_id)
 
-    username = db_account.username or db_account.email or f"Account {db_account.id}"
-    view = render_logout_account_confirmation(account_id, username, translator)
-    await event.edit(view.message, buttons=view.buttons)
+        if not account or account.user_id != user.id:
+            view = render_account_not_found(translator)
+            await event.edit(view.message, buttons=view.buttons)
+            return
+
+        username = account.username or account.email
+        view = render_logout_account_confirmation(account_id, username, translator)
+        await event.edit(view.message, buttons=view.buttons)
 
 
 @setup_handler(require_auth=True)
 async def confirm_logout_account_callback(
-    event: events.CallbackQuery.Event, user: User, translator: Translator, db_account: Account
+    event: events.CallbackQuery.Event, user: User, translator: Translator, seedr_client: AsyncSeedr
 ):
     """Handle confirmed account logout."""
     callback_data = event.data.decode()
     account_id = int(callback_data.replace("confirm_logout_", ""))
 
-    if db_account.id != account_id:
-        view = render_account_not_found(translator)
-        await event.edit(view.message, buttons=view.buttons)
-        return
-
-    has_accounts = False
     async with get_session() as session:
-        user_repo = UserRepository(session)
         account_repo = AccountRepository(session)
+        account = await account_repo.get_by_id(account_id)
+
+        if not account or account.user_id != user.id:
+            view = render_account_not_found(translator)
+            await event.edit(view.message, buttons=view.buttons)
+            return
+
+        user_repo = UserRepository(session)
         await account_repo.delete(account_id)
         accounts = await account_repo.get_by_user_id(user.id)
         if user.default_account_id == account_id and accounts:
@@ -106,4 +110,3 @@ async def cancel_logout_callback(event: events.CallbackQuery.Event, user: User, 
     """Handle cancel logout button - return to accounts view."""
     await event.answer(translator.get("cancelled"), alert=False)
     await accounts_handler(event)
-
