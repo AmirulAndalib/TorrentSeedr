@@ -20,7 +20,7 @@ async def delete_file_callback(
     file_id = str(int(event.data.decode().replace("delete_file_", "")))
     result = await seedr_client.delete_file(file_id)
     if result.result:
-        await event.answer(translator.get("removedSuccessfully"), alert=False)
+        await event.answer(translator.get("deletedSuccessfully"), alert=False)
         await event.delete()
     else:
         view = render_failed_to_delete_file_message(translator)
