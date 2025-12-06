@@ -12,7 +12,7 @@ def render_start_message(has_accounts: bool, translator: Translator) -> ViewResp
         keyboard = [
             [
                 Button.text(translator.get("fileManagerBtn"), resize=True),
-                Button.text(translator.get("activeTorrentsBtn"), resize=True),
+                Button.text(translator.get("activeDownloadsBtn"), resize=True),
             ],
             [
                 Button.text(translator.get("infoBtn"), resize=True),
