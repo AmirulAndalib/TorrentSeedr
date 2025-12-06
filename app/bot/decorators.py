@@ -76,7 +76,6 @@ def setup_handler(require_auth: bool = False):
                         await event.answer(error_message, alert=True)
                     else:
                         await event.respond(error_message)
-                logger.warning(f"NoAccountError in {func.__name__}: {e}", exc_info=True)
                 raise events.StopPropagation()
 
             except AuthenticationError as e:
