@@ -37,20 +37,24 @@ def render_folder_contents_message(contents, folder_id, parent_id, page: int, tr
     buttons = []
     for item in paginated_items:
         if hasattr(item, "folder_file_id"):  # It's a file
-            emoji = translator.get("fileEmoji")
-            callback_suffix = ""
+            callback_parts = [
+                f"file_{item.folder_file_id}",
+                f"parent_{folder_id}",
+            ]
             if item.play_video:
                 emoji = translator.get("videoEmoji")
-                callback_suffix = "_video"
+                callback_parts.append("type_video")
             elif item.play_audio:
                 emoji = translator.get("audioEmoji")
-                callback_suffix = "_audio"
+                callback_parts.append("type_audio")
+            else:
+                pass
 
             buttons.append(
                 [
                     Button.inline(
                         f"{emoji} {item.name}",
-                        f"file_{item.folder_file_id}_parent_{folder_id}{callback_suffix}".encode(),
+                        "_".join(callback_parts).encode(),
                     )
                 ]
             )
@@ -83,11 +87,7 @@ def render_folder_contents_message(contents, folder_id, parent_id, page: int, tr
             Button.inline(translator.get("getLinkBtn"), f"folder_link_{folder_id}".encode()),
         ]
     )
-    back_button = (
-        Button.inline(translator.get("backBtn"), b"folder_back")
-        if parent_id is None
-        else Button.inline(translator.get("backBtn"), f"folder_{parent_id}".encode())
-    )
+    back_button = Button.inline(translator.get("backBtn"), f"folder_{parent_id or '0'}".encode())
     buttons.append(
         [
             Button.inline(translator.get("playlistBtn"), f"playlist_m3u_folder_{folder_id}".encode()),
@@ -100,7 +100,6 @@ def render_folder_contents_message(contents, folder_id, parent_id, page: int, tr
 
 def render_file_details_message(
     file_metadata,
-    url: str | None,
     is_video: bool,
     is_audio: bool,
     file_id: str,
@@ -119,13 +118,6 @@ def render_file_details_message(
     message = f"<b>{translator.get('fileEmoji')} {file_metadata.name}</b>\n\n"
     message += f"{translator.get('sizeLabel')}: {format_size(file_metadata.size)}\n"
     message += f"{translator.get('typeLabel')}: {file_type}\n\n"
-
-    if url:
-        message += (
-            f"{translator.get('downloadUrlLabel')}:\n"
-            f"<code>{url}</code>\n\n"
-            f"<a href='{url}'>{translator.get('clickToDownloadLabel')}</a>\n"
-        )
 
     buttons = [
         [
