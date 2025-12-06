@@ -4,11 +4,11 @@ from seedrcc import AsyncSeedr
 from telethon import events
 
 from app.bot.decorators import setup_handler
-from app.bot.views.files_view import (
-    render_error_fetching_link_message,
+from app.bot.views.link_view import (
     render_file_link_message,
     render_folder_link_message,
 )
+from app.bot.views.status_view import render_error_fetching_link_message
 from app.database.models import User
 from app.utils.language import Translator
 

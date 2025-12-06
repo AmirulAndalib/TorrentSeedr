@@ -4,6 +4,7 @@ fileEmoji: "📄"
 videoEmoji: "📹"
 audioEmoji: "🎵"
 deleteEmoji: "🚪"
+activeAccountEmoji: "✅"
 
 ## Buttons
 logoutBtn: "Log Out 🚪"

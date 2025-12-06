@@ -4,7 +4,7 @@ from seedrcc import AsyncSeedr
 from telethon import events
 
 from app.bot.decorators import setup_handler
-from app.bot.views.files_view import (
+from app.bot.views.status_view import (
     render_failed_to_delete_file_message,
     render_failed_to_delete_folder_message,
 )

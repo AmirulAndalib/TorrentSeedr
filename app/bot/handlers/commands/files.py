@@ -4,7 +4,8 @@ from seedrcc import AsyncSeedr
 from telethon import events
 
 from app.bot.decorators import setup_handler
-from app.bot.views.files_view import render_files_message, render_no_files_message
+from app.bot.views.navigation_view import render_files_message
+from app.bot.views.status_view import render_no_files_message
 from app.database.models import User
 from app.utils.language import Translator
 
