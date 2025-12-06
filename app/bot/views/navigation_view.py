@@ -1,3 +1,5 @@
+"""Views for file and folder navigation."""
+
 from telethon import Button
 
 from app.bot.views import ViewResponse
@@ -41,14 +43,13 @@ def render_folder_contents_message(contents, folder_id, parent_id, page: int, tr
                 f"file_{item.folder_file_id}",
                 f"parent_{folder_id}",
             ]
+            emoji = translator.get("fileEmoji")
             if item.play_video:
                 emoji = translator.get("videoEmoji")
                 callback_parts.append("type_video")
             elif item.play_audio:
                 emoji = translator.get("audioEmoji")
                 callback_parts.append("type_audio")
-            else:
-                emoji = translator.get("fileEmoji")
 
             buttons.append(
                 [
@@ -129,7 +130,7 @@ def render_file_details_message(
         buttons.append(
             [
                 Button.inline(
-                    translator.get("playlistBtn"),
+                    f"{translator.get('playlistBtn')} ({playlist_format.upper()})",
                     f"playlist_{playlist_format}_file_{file_id}".encode(),
                 )
             ]
@@ -139,47 +140,3 @@ def render_file_details_message(
     buttons.append([back_button])
 
     return ViewResponse(message=message, buttons=buttons)
-
-
-def render_file_link_message(file_result, translator: Translator) -> ViewResponse:
-    """Render the file download link message."""
-    message = (
-        f"<b>{translator.get('fileEmoji')} {file_result.name}</b>\n\n"
-        f"<b>{translator.get('downloadLinkLabel')}</b>:\n"
-        f"<code>{file_result.url}</code>"
-    )
-    buttons = [[Button.url(translator.get("downloadFileBtn"), file_result.url)]]
-    return ViewResponse(message=message, buttons=buttons)
-
-
-def render_folder_link_message(archive_url: str, translator: Translator) -> ViewResponse:
-    """Render the folder download link message."""
-    message = (
-        f"<b>{translator.get('folderEmoji')} {translator.get('folderDownloadLinkLabel')}</b>\n\n"
-        f"<b>{translator.get('downloadLinkLabel')}</b>:\n"
-        f"<code>{archive_url}</code>"
-    )
-    buttons = [[Button.url(translator.get("downloadFolderBtn"), archive_url)]]
-    return ViewResponse(message=message, buttons=buttons)
-
-
-def render_failed_to_delete_file_message(translator: Translator) -> ViewResponse:
-    """Render the message for failed file deletion."""
-    message = translator.get("somethingWrong")
-    return ViewResponse(message=message)
-
-
-def render_failed_to_delete_folder_message(translator: Translator) -> ViewResponse:
-    """Render the message for failed folder deletion."""
-    message = translator.get("somethingWrong")
-    return ViewResponse(message=message)
-
-
-def render_no_files_message(translator: Translator) -> ViewResponse:
-    """Render the message for when there are no files."""
-    return ViewResponse(message=translator.get("noFiles"))
-
-
-def render_error_fetching_link_message(translator: Translator) -> ViewResponse:
-    """Render the message for an error fetching a link."""
-    return ViewResponse(message=translator.get("errorFetchingLink"))
