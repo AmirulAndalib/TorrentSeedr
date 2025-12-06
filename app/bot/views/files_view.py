@@ -48,7 +48,7 @@ def render_folder_contents_message(contents, folder_id, parent_id, page: int, tr
                 emoji = translator.get("audioEmoji")
                 callback_parts.append("type_audio")
             else:
-                pass
+                emoji = translator.get("fileEmoji")
 
             buttons.append(
                 [
@@ -129,17 +129,13 @@ def render_file_details_message(
         buttons.append(
             [
                 Button.inline(
-                    f"{translator.get('playlistBtn')} ({playlist_format.upper()})",
+                    translator.get("playlistBtn"),
                     f"playlist_{playlist_format}_file_{file_id}".encode(),
                 )
             ]
         )
 
-    back_button = (
-        Button.inline(translator.get("backBtn"), b"folder_back")
-        if parent_folder_id is None
-        else Button.inline(translator.get("backBtn"), f"folder_{parent_folder_id}".encode())
-    )
+    back_button = Button.inline(translator.get("backBtn"), f"folder_{parent_folder_id or '0'}".encode())
     buttons.append([back_button])
 
     return ViewResponse(message=message, buttons=buttons)
