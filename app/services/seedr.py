@@ -9,4 +9,3 @@ async def on_token_refresh(new_token: Token, account_id: int, user_id: int) -> N
     async with get_session() as new_session:
         account_repo = AccountRepository(new_session)
         await account_repo.update_token(account_id, user_id, new_token.to_base64())
-        await new_session.commit()
