@@ -8,18 +8,19 @@ from app.utils import format_size
 from app.utils.language import Translator
 
 
-def render_files_message(folders, translator: Translator) -> ViewResponse:
-    """Render the file manager message and buttons for root folder."""
-    message = f"<b>{translator.get('fileManagerBtn')} - {translator.get('rootLabel')}</b>\n\n"
-    message += f"<i>{len(folders)} {translator.get('foldersLabel')}</i>"
-
-    buttons = [[Button.inline(f"{translator.get('folderEmoji')} {f.name}", f"folder_{f.id}".encode())] for f in folders]
-    return ViewResponse(message=message, buttons=buttons)
-
-
 def render_folder_contents_message(contents, folder_id, parent_id, page: int, translator: Translator) -> ViewResponse:
     """Render the folder contents message and buttons with pagination."""
-    message = f"<b>{translator.get('folderEmoji')} {contents.name}</b>\n\n"
+    # Message for root folder
+    if folder_id == "0":
+        message = f"<b>{translator.get('fileManagerBtn')} - {translator.get('rootLabel')}</b>\n\n"
+        message += f"<i>{len(contents.folders)} {translator.get('foldersLabel')}</i>"
+
+    # For normal folder
+    else:
+        message = f"<b>{translator.get('folderEmoji')} {contents.name}</b>\n\n"
+        message += f"{translator.get('foldersLabel')}: {len(contents.folders)}\n"
+        message += f"{translator.get('filesLabel')}: {len(contents.files)}\n"
+        message += f"{translator.get('totalSizeLabel')}: {format_size(sum(f.size for f in contents.files))}\n"
 
     all_items = contents.folders + contents.files
     total_items = len(all_items)
@@ -29,9 +30,6 @@ def render_folder_contents_message(contents, folder_id, parent_id, page: int, tr
     end_index = start_index + settings.page_size
     paginated_items = all_items[start_index:end_index]
 
-    message += f"{translator.get('foldersLabel')}: {len(contents.folders)}\n"
-    message += f"{translator.get('filesLabel')}: {len(contents.files)}\n"
-    message += f"{translator.get('totalSizeLabel')}: {format_size(sum(f.size for f in contents.files))}\n"
     if total_pages > 1:
         message += f"{translator.get('pageLabel')}: {page}/{total_pages}\n"
     message += "\n"
@@ -82,19 +80,21 @@ def render_folder_contents_message(contents, folder_id, parent_id, page: int, tr
     if pagination_buttons:
         buttons.append(pagination_buttons)
 
-    buttons.append(
-        [
-            Button.inline(translator.get("deleteBtn"), f"delete_folder_{folder_id}".encode()),
-            Button.inline(translator.get("getLinkBtn"), f"folder_link_{folder_id}".encode()),
-        ]
-    )
-    back_button = Button.inline(translator.get("backBtn"), f"folder_{parent_id or '0'}".encode())
-    buttons.append(
-        [
-            Button.inline(translator.get("playlistBtn"), f"playlist_m3u_folder_{folder_id}".encode()),
-            back_button,
-        ]
-    )
+    # Don't show action buttons for root folder
+    if folder_id != "0":
+        buttons.append(
+            [
+                Button.inline(translator.get("deleteBtn"), f"delete_folder_{folder_id}".encode()),
+                Button.inline(translator.get("getLinkBtn"), f"folder_link_{folder_id}".encode()),
+            ]
+        )
+        back_button = Button.inline(translator.get("backBtn"), f"folder_{parent_id or '0'}".encode())
+        buttons.append(
+            [
+                Button.inline(translator.get("playlistBtn"), f"playlist_m3u_folder_{folder_id}".encode()),
+                back_button,
+            ]
+        )
 
     return ViewResponse(message=message, buttons=buttons)
 
