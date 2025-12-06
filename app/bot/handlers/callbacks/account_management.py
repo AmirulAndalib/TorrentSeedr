@@ -106,8 +106,6 @@ async def confirm_logout_account_callback(
                 # Only one account (being deleted), set to None
                 await user_repo.update_settings(user.id, default_account_id=None)
 
-        await session.commit()
-
     await event.answer(translator.get("accountRemoved"), alert=False)
 
     if has_multiple_accounts:
