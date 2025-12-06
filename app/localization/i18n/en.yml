@@ -3,6 +3,7 @@ folderEmoji: "📁"
 fileEmoji: "📄"
 videoEmoji: "📹"
 audioEmoji: "🎵"
+deleteEmoji: "🚪"
 
 ## Buttons
 logoutBtn: "Log Out 🚪"
