@@ -21,7 +21,7 @@ def render_accounts_message(
         account_label = f"{translator.get('activeAccountEmoji')} {username}" if is_active else username
         row = [
             Button.inline(account_label, f"switch_account_{account.id}".encode()),
-            Button.inline(translator.get("deleteEmoji"), f"logout_account_{account.id}".encode()),
+            Button.inline(translator.get("logoutBtn"), f"logout_account_{account.id}".encode()),
         ]
         buttons.append(row)
 

@@ -3,7 +3,6 @@ folderEmoji: "📁"
 fileEmoji: "📄"
 videoEmoji: "🎬"
 audioEmoji: "🎵"
-deleteEmoji: "🚪"
 activeAccountEmoji: "✅"
 
 ## Buttons
@@ -13,6 +12,7 @@ activeDownloadsBtn: ⌛ Active Downloads
 backBtn: 🔙 Back
 cancelBtn: ❌ Cancel
 loginBtn: ➕ Log In
+logoutBtn: ➜] Logout
 addAccountBtn: ➕ Add another account
 infoBtn: ℹ️ Info
 deleteBtn: ⛔ Delete
@@ -25,7 +25,7 @@ xspfBtn: "XSPF"
 loginWithEmailBtn: 📧 Login with email/password
 playlistBtn: "▶️ Play"
 authorizeWithDeviceBtn: 📱 Authorize with device (Recommended)
-signupBtn: ➕ Sign up
+signupBtn: 🚀 Sign up
 previousBtn: "◀️ Previous"
 nextBtn: "Next ▶️"
 downloadFileBtn: "⬇️ Download File"
