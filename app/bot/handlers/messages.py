@@ -6,7 +6,7 @@ from telethon import events
 
 from app.bot.decorators import setup_handler
 from app.bot.handlers.commands.accounts import accounts_handler
-from app.bot.handlers.commands.active import active_torrents_handler
+from app.bot.handlers.commands.active import active_handler
 from app.bot.handlers.commands.files import files_handler
 from app.bot.handlers.commands.info import info_handler
 from app.bot.handlers.commands.login import login_handler
@@ -25,7 +25,7 @@ async def text_message_handler(event: events.NewMessage.Event, user: User, trans
     # Map button text to the corresponding handler function.
     actions = {
         translator.get("fileManagerBtn"): files_handler,
-        translator.get("activeTorrentsBtn"): active_torrents_handler,
+        translator.get("activeDownloadsBtn"): active_handler,
         translator.get("infoBtn"): info_handler,
         translator.get("accountsBtn"): accounts_handler,
         translator.get("loginBtn"): login_handler,

@@ -8,7 +8,7 @@ audioEmoji: "🎵"
 logoutBtn: "Log Out 🚪"
 accountsBtn: 🗂️ Accounts
 accountInfoBtn: 👤 My Account
-activeTorrentsBtn: ⌛ Active Torrents
+activeDownloadsBtn: ⌛ Active Downloads
 backBtn: 🔙 Back
 cancelBtn: ❌ Cancel
 cancelDownloadBtn: ❌ Cancel download
@@ -77,7 +77,7 @@ loginMessage: "Please choose a method to log in to your Seedr account."
 welcomeMessage: "Welcome to the Seedr bot! If you already have an account, please log in. If not, you can sign up."
 alreadyActive: ✅ This account is already active.
 alreadyDownloading: |
-  🥴 The torrent is already downloading. Please see the status in active torrents list or by clicking /active.
+  🥴 The torrent is already downloading. Please see the status in active downloads list or by clicking /active.
 accountRemoved: ➖ Account removed successfully.
 authorize: |
   ️ <b>Please follow the instructions to authorize your account</b>
@@ -117,7 +117,7 @@ openInMediaCaption: |
 
   <b>⚠️ If failed to play, please choose a different file extension by clicking the button below.</b>
 noPlayableMedia: ⚠️ This folder doesn't contain any playable media.
-noActiveTorrents: 🤝 You don't have any active torrents.
+noActiveDownloads: 🤝 You don't have any active downloads.
 torrentAddedSuccessfully: 🙌 The torrent is added successfully to the download queue.
 torrentFileUploadNotSupported: ⚠️ Torrent file upload is not supported yet.
 noMultipleAccounts: ⚠️ You don't have multiple accounts to switch.
