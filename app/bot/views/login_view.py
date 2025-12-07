@@ -3,6 +3,7 @@
 from telethon import Button
 
 from app.bot.views import ViewResponse
+from app.bot.views.shared_view import get_main_keyboard
 from app.utils.language import Translator
 
 
@@ -42,9 +43,6 @@ def render_enter_password_for(email: str, translator: Translator) -> ViewRespons
 def render_logging_in(translator: Translator) -> ViewResponse:
     """Render the logging in message."""
     return ViewResponse(message=translator.get("loggingIn"))
-
-
-from app.bot.views.shared_view import get_main_keyboard
 
 
 def render_logged_in(username: str, translator: Translator) -> ViewResponse:
