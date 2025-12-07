@@ -10,6 +10,7 @@ from app.utils.language import Translator
 
 def render_folder_contents_message(contents, folder_id, parent_id, page: int, translator: Translator) -> ViewResponse:
     """Render the folder contents message and buttons with pagination."""
+    parent_id = parent_id or "0"
     # Message for root folder
     if folder_id == "0":
         message = f"<b>{translator.get('fileManagerBtn')} - {translator.get('rootLabel')}</b>\n\n"
@@ -70,11 +71,13 @@ def render_folder_contents_message(contents, folder_id, parent_id, page: int, tr
     pagination_buttons = []
     if page > 1:
         pagination_buttons.append(
-            Button.inline(translator.get("previousBtn"), f"folder_{folder_id}_page_{page - 1}".encode())
+            Button.inline(
+                translator.get("previousBtn"), f"folder_{folder_id}_parent_{parent_id}_page_{page - 1}".encode()
+            )
         )
     if page < total_pages:
         pagination_buttons.append(
-            Button.inline(translator.get("nextBtn"), f"folder_{folder_id}_page_{page + 1}".encode())
+            Button.inline(translator.get("nextBtn"), f"folder_{folder_id}_parent_{parent_id}_page_{page + 1}".encode())
         )
 
     if pagination_buttons:
@@ -88,7 +91,7 @@ def render_folder_contents_message(contents, folder_id, parent_id, page: int, tr
                 Button.inline(translator.get("getLinkBtn"), f"folder_link_{folder_id}".encode()),
             ]
         )
-        back_button = Button.inline(translator.get("backBtn"), f"folder_{parent_id or '0'}".encode())
+        back_button = Button.inline(translator.get("backBtn"), f"folder_{parent_id}".encode())
         buttons.append(
             [
                 Button.inline(translator.get("playlistBtn"), f"playlist_m3u_folder_{folder_id}".encode()),
