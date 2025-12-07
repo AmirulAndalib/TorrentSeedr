@@ -6,13 +6,14 @@ from telethon import events
 
 from app.bot.client import bot
 from app.bot.decorators import setup_handler
+from app.bot.utils.conversation import ask
 from app.bot.views.login_view import (
-    render_cancelled_login_message,
     render_enter_email,
     render_enter_password_for,
     render_incorrect_password,
     render_logged_in,
     render_logging_in,
+    render_store_password_prompt,
 )
 from app.database import get_session
 from app.database.models import User
@@ -25,40 +26,27 @@ async def login_email_callback(event: events.CallbackQuery.Event, user: User, tr
     """Handle email/password login callback."""
     has_accounts = bool(user.default_account_id)
     try:
-        cancel_text = translator.get("cancelBtn")
-
         async with bot.conversation(user.telegram_id, timeout=300) as conv:
             # Prompt for email address
-            view = render_enter_email(translator)
-            await conv.send_message(view.message, buttons=view.buttons)
-
-            # After getting email response
-            email_response = await conv.get_response()
-            email = email_response.text.strip()
-
-            if email == cancel_text:
-                view = render_cancelled_login_message(translator=translator, has_accounts=has_accounts)
-                await conv.send_message(view.message, buttons=view.buttons)
-                conv.cancel()
-                raise events.StopPropagation()
-
-            await email_response.delete()
+            email = await ask(conv, render_enter_email(translator), translator, has_accounts)
 
             # Prompt for password
-            view = render_enter_password_for(email, translator)
-            await conv.send_message(view.message, buttons=view.buttons)
+            password = await ask(
+                conv,
+                render_enter_password_for(email, translator),
+                translator,
+                has_accounts,
+                delete_input=True,
+            )
 
-            # After getting password response
-            password_response = await conv.get_response()
-            password = password_response.text.strip()
-
-            if password == cancel_text:
-                view = render_cancelled_login_message(translator=translator, has_accounts=has_accounts)
-                await conv.send_message(view.message, buttons=view.buttons)
-                conv.cancel()
-                raise events.StopPropagation()
-
-            await password_response.delete()
+            # Prompt for password storage
+            response_text = await ask(
+                conv,
+                render_store_password_prompt(translator),
+                translator,
+                has_accounts,
+            )
+            store_password = response_text.lower() == translator.get("yesBtn").lower()
 
             view = render_logging_in(translator)
             status_message = await conv.send_message(view.message, buttons=view.buttons)
@@ -75,7 +63,7 @@ async def login_email_callback(event: events.CallbackQuery.Event, user: User, tr
                     token=token.to_base64(),
                     username=settings.account.username,
                     email=email,
-                    password=password,
+                    password=password if store_password else None,
                     is_premium=bool(settings.account.premium),
                     invites_remaining=settings.account.invites,
                 )
@@ -88,6 +76,6 @@ async def login_email_callback(event: events.CallbackQuery.Event, user: User, tr
         await event.respond(translator.get("conversationTimeout"))
     except AuthenticationError:
         view = render_incorrect_password(translator, has_accounts=has_accounts)
-        await status_message.edit(view.message, buttons=view.buttons)
+        await event.respond(view.message, buttons=view.buttons)
     finally:
         await event.delete()

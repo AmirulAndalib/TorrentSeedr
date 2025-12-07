@@ -76,3 +76,16 @@ def render_auth_failed(error: str, translator: Translator) -> ViewResponse:
     """Render the auth failed message."""
     message = translator.get("authFailed").format(error=error)
     return ViewResponse(message=message)
+
+
+def render_store_password_prompt(translator: Translator) -> ViewResponse:
+    """Render the store password prompt."""
+    message = translator.get("storePasswordPrompt")
+    buttons = [
+        [
+            Button.text(translator.get("yesBtn"), resize=True),
+            Button.text(translator.get("noBtn"), resize=True),
+        ],
+        [Button.text(translator.get("cancelBtn"), resize=True)],
+    ]
+    return ViewResponse(message=message, buttons=buttons)

@@ -109,6 +109,10 @@ fileTooLarge: ⚠️ The torrent file is too large. Please upload a file smaller
 signupMessage: Click the button below to create a new Seedr account.
 cannotDetermineFolder: ⚠️ Could not determine the file's folder. Cannot show details.
 fileNotFound: ⚠️ File not found in the folder.
+storePasswordPrompt: |
+  <b>Do you want to store your password?</b>
+
+  Storing your password will allow the bot to automatically refresh your account token if it expires. This is optional.
 
 # Command Descriptions
 startCmdDesc: 👋 Start the bot
