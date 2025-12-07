@@ -7,7 +7,6 @@ from telethon import events
 
 from app.bot.decorators import setup_handler
 from app.bot.views.playlist_view import (
-    render_no_playable_media_message,
     render_playlist_message,
 )
 from app.database import get_session
@@ -22,8 +21,6 @@ async def playlist_callback(
     event: events.CallbackQuery.Event, user: User, translator: Translator, seedr_client: AsyncSeedr
 ):
     """Handle playlist generation callback."""
-    await event.answer(translator.get("processing"), alert=False)
-
     callback_data = event.data.decode()
     parts = callback_data.split("_")
     playlist_type = parts[1]
@@ -48,6 +45,4 @@ async def playlist_callback(
         finally:
             os.remove(playlist_file)
     else:
-        view = render_no_playable_media_message(translator)
-        await event.edit(view.message, buttons=view.buttons)
-
+        await event.answer(translator.get("noPlayableMedia"), alert=True)

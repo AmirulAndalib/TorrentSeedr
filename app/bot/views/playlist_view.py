@@ -31,8 +31,3 @@ def render_playlist_message(
         ]
     ]
     return ViewResponse(message=caption, buttons=buttons)
-
-
-def render_no_playable_media_message(translator: Translator) -> ViewResponse:
-    """Render the message for no playable media."""
-    return ViewResponse(message=translator.get("noPlayableMedia"))
