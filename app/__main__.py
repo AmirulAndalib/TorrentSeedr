@@ -14,6 +14,7 @@ from app.bot.handlers.callbacks.account_management import (
 )
 from app.bot.handlers.callbacks.active_downloads import (
     active_download_callback,
+    cancel_download_callback,
 )
 from app.bot.handlers.callbacks.delete import (
     delete_file_callback,
@@ -90,6 +91,9 @@ async def main():
 
     # Callback handlers - Active Downloads
     bot.add_event_handler(active_download_callback, events.CallbackQuery(pattern=b"active_.*"))
+    bot.add_event_handler(
+        cancel_download_callback, events.CallbackQuery(pattern=b"cancel_download_.*")
+    )
 
     # This handler catches text button clicks and other text messages.
     bot.add_event_handler(text_message_handler, events.NewMessage(incoming=True))

@@ -29,3 +29,18 @@ async def active_download_callback(
         return
 
     await event.answer(translator.get("downloadNotFound"), alert=True)
+
+
+@setup_handler(require_auth=True)
+async def cancel_download_callback(
+    event: events.CallbackQuery.Event,
+    user: User,
+    translator: Translator,
+    seedr_client: AsyncSeedr,
+):
+    """Handle cancelling an active download."""
+    download_id = str(event.data.decode().replace("cancel_download_", ""))
+
+    await seedr_client.delete_torrent(download_id)
+
+    await event.edit(translator.get("downloadCancelled"))

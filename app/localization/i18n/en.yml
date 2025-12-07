@@ -104,6 +104,7 @@ noPlayableMedia: ⚠️ This folder doesn't contain any playable media.
 noActiveDownloads: 🤝 You don't have any active downloads.
 selectDownload: "Please select a download to view its progress"
 downloadNotFound: 🤷‍♂️ This download is no longer active. It may have been completed or cancelled.
+downloadCancelled: ✅ Download successfully cancelled.
 torrentAddedSuccessfully: 🙌 The torrent is added successfully to the download queue.
 torrentFileUploadNotSupported: ⚠️ Torrent file upload is not supported yet.
 conversationTimeout: Conversation timed out. Please try again.

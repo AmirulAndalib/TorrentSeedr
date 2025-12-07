@@ -22,7 +22,9 @@ def render_download_status(download, translator: Translator) -> ViewResponse:
     if download.download_rate:
         speed = format_size(download.download_rate)
         message += f"   {translator.get('speedLabel')}: {speed}/s\n"
-    return ViewResponse(message=message)
+
+    buttons = [[Button.inline(translator.get("cancelBtn"), f"cancel_download_{download.id}".encode())]]
+    return ViewResponse(message=message, buttons=buttons)
 
 
 def render_download_menu(active_downloads, translator: Translator) -> ViewResponse:
