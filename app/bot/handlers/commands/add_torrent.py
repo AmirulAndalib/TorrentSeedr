@@ -21,10 +21,12 @@ async def add_torrent_handler(
     user: User,
     translator: Translator,
     seedr_client: AsyncSeedr,
+    magnet_link: str | None = None,
     **kwargs,
 ):
     """Handle adding torrent from magnet link."""
-    magnet_link = extract_magnet_from_text(event.message.text)
+    if not magnet_link:
+        magnet_link = extract_magnet_from_text(event.message.text)
 
     view = render_processing_message(translator)
     status_message = await event.respond(view.message, buttons=view.buttons)
