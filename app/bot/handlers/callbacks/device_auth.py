@@ -29,8 +29,6 @@ async def authorize_device_callback(event: events.CallbackQuery.Event, user: Use
 async def auth_complete_callback(event: events.CallbackQuery.Event, user: User, translator: Translator):
     """Handle authorization completion callback."""
     device_code = event.data.decode().replace("auth_complete_", "")
-    view = render_logging_in(translator)
-    await event.edit(view.message, buttons=view.buttons)
 
     try:
         seedr_client = await AsyncSeedr.from_device_code(device_code)
@@ -54,5 +52,8 @@ async def auth_complete_callback(event: events.CallbackQuery.Event, user: User, 
         view = render_logged_in(settings.account.username, translator)
         await event.edit(view.message, buttons=view.buttons)
     except AuthenticationError as e:
+        if e.error_type == "authorization_pending":
+            await event.answer(translator.get("authPending"), alert=True)
+            return
         view = render_auth_failed(str(e), translator)
         await event.edit(view.message, buttons=view.buttons)

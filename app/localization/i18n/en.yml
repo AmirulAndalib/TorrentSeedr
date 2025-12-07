@@ -93,6 +93,7 @@ loggingIn: ⟳ Logging in...
 loggedInAs: 💫 Successfully logged in as {username}.
 incorrectPassword: ⚠️ The email and password do not match. Please try again.
 authFailed: "⚠️ Authentication failed: {error}"
+authPending: Please follow the steps to complete the Authentication.
 openInMediaCaption: |
   Click the icon above and the media shall start playing in your default player.
 
