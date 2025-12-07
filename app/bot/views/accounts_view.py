@@ -3,10 +3,9 @@
 from telethon import Button
 
 from app.bot.views import ViewResponse
+from app.bot.views.shared_view import get_main_keyboard
 from app.database.models import Account
 from app.utils.language import Translator
-
-from app.bot.views.shared_view import get_main_keyboard
 
 
 def render_accounts_message(
