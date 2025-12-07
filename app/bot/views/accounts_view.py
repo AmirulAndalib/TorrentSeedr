@@ -25,7 +25,9 @@ def render_accounts_message(
         ]
         buttons.append(row)
 
-
+    add_account_text = translator.get("addAccountBtn")
+    buttons.append([Button.inline(add_account_text, b"login")])
+    buttons.append([Button.url(translator.get("signupBtn"), "https://www.seedr.cc")])
 
     return ViewResponse(message=message, buttons=buttons)
 
