@@ -24,7 +24,6 @@ from app.utils.language import Translator
 async def login_email_callback(event: events.CallbackQuery.Event, user: User, translator: Translator):
     """Handle email/password login callback."""
     try:
-        await event.answer()
         cancel_text = translator.get("cancelBtn")
 
         async with bot.conversation(user.telegram_id, timeout=300) as conv:
@@ -88,6 +87,4 @@ async def login_email_callback(event: events.CallbackQuery.Event, user: User, tr
         await event.respond(translator.get("conversationTimeout"))
     except AuthenticationError:
         view = render_incorrect_password(translator)
-        await conv.send_message(view.message, buttons=view.buttons)
-    finally:
-        await event.delete()
+        await event.respond(view.message, buttons=view.buttons)

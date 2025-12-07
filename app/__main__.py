@@ -68,7 +68,7 @@ async def main():
     bot.add_event_handler(authorize_device_callback, events.CallbackQuery(pattern=b"authorize_device"))
     bot.add_event_handler(login_email_callback, events.CallbackQuery(pattern=b"login_email"))
     bot.add_event_handler(auth_complete_callback, events.CallbackQuery(pattern=b"auth_complete_.*"))
-    bot.add_event_handler(login_handler, events.CallbackQuery(pattern=b"login"))
+    bot.add_event_handler(login_handler, events.CallbackQuery(pattern=b"^login$"))
     bot.add_event_handler(switch_account_callback, events.CallbackQuery(pattern=b"switch_account_.*"))
     bot.add_event_handler(logout_account_callback, events.CallbackQuery(pattern=b"logout_account_.*"))
     bot.add_event_handler(confirm_logout_account_callback, events.CallbackQuery(pattern=b"confirm_logout_.*"))
