@@ -42,7 +42,7 @@ async def switch_account_callback(
             return
 
         username = account_to_switch.username or account_to_switch.email
-        await user_repo.update_settings(user.id, default_account_id=account_to_switch.id)
+        await user_repo.update_settings(event, user.id, default_account_id=account_to_switch.id)
 
     await event.answer(translator.get("accountSwitched").format(username=username), alert=False)
     await accounts_handler(event)
@@ -101,10 +101,10 @@ async def confirm_logout_account_callback(
             if has_multiple_accounts:
                 new_default = next((acc for acc in accounts if acc.id != account_id), None)
                 if new_default:
-                    await user_repo.update_settings(user.id, default_account_id=new_default.id)
+                    await user_repo.update_settings(event, user.id, default_account_id=new_default.id)
             else:
                 # Only one account (being deleted), set to None
-                await user_repo.update_settings(user.id, default_account_id=None)
+                await user_repo.update_settings(event, user.id, default_account_id=None)
 
     await event.answer(translator.get("accountRemoved"), alert=False)
 

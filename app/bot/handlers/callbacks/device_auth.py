@@ -46,7 +46,7 @@ async def auth_complete_callback(event: events.CallbackQuery.Event, user: User, 
                 invites_remaining=settings.account.invites,
             )
 
-            await UserRepository(session).update_settings(user.id, default_account_id=account.id)
+            await UserRepository(session).update_settings(event, user.id, default_account_id=account.id)
 
         view = render_logged_in(settings.account.username, translator)
         await event.edit(view.message, buttons=view.buttons)

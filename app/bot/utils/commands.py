@@ -7,7 +7,7 @@ from app.utils.language import Translator
 
 
 async def set_user_commands(
-    event: events.NewMessage.Event,
+    event: events.NewMessage.Event | events.CallbackQuery.Event,
     translator: Translator,
     has_accounts: bool,
 ):

@@ -31,7 +31,7 @@ async def playlist_callback(
     media_id_str = "_".join(parts[3:])
 
     async with get_session() as session:
-        await UserRepository(session).update_settings(user.id, playlist_format=playlist_type)
+        await UserRepository(session).update_settings(event, user.id, playlist_format=playlist_type)
 
     playlist_file = None
     if media_type == "file":

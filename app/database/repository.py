@@ -2,8 +2,13 @@
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from telethon import events
 
+from app.bot.utils.commands import set_user_commands
 from app.database.models import Account, User
+from app.utils.language import get_language_service
+
+language_service = get_language_service()
 
 
 class UserRepository:
@@ -38,8 +43,10 @@ class UserRepository:
         await self.session.flush()
         return user
 
-    async def update_settings(self, user_id: int, **kwargs) -> User | None:
-        """Update user settings."""
+    async def update_settings(
+        self, event: events.NewMessage.Event | events.CallbackQuery.Event, user_id: int, **kwargs
+    ) -> User | None:
+        """Update user settings and refresh commands."""
         user = await self.get_by_id(user_id)
         if not user:
             return None
@@ -49,6 +56,17 @@ class UserRepository:
                 setattr(user, key, value)
 
         await self.session.flush()
+
+        # Update bot commands
+        translator = language_service.get_translator(user.language)
+        has_accounts = user.default_account_id is not None
+
+        await set_user_commands(
+            event=event,
+            translator=translator,
+            has_accounts=has_accounts,
+        )
+
         return user
 
     async def get_or_create(self, telegram_id: int, username: str | None = None) -> User:
@@ -67,9 +85,7 @@ class AccountRepository:
 
     async def get_by_id(self, account_id: int, user_id: int) -> Account | None:
         """Get account by ID, filtered by user_id for security."""
-        result = await self.session.execute(
-            select(Account).where(Account.id == account_id, Account.user_id == user_id)
-        )
+        result = await self.session.execute(select(Account).where(Account.id == account_id, Account.user_id == user_id))
         return result.scalar_one_or_none()
 
     async def get_by_user_id(self, user_id: int) -> list[Account]:
