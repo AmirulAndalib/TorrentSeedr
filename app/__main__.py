@@ -12,6 +12,9 @@ from app.bot.handlers.callbacks.account_management import (
     logout_account_callback,
     switch_account_callback,
 )
+from app.bot.handlers.callbacks.active_downloads import (
+    active_download_callback,
+)
 from app.bot.handlers.callbacks.delete import (
     delete_file_callback,
     delete_folder_callback,
@@ -24,9 +27,6 @@ from app.bot.handlers.callbacks.email_auth import login_email_callback
 from app.bot.handlers.callbacks.link import file_link_callback, folder_link_callback
 from app.bot.handlers.callbacks.navigation import file_callback, folder_callback
 from app.bot.handlers.callbacks.playlist import playlist_callback
-from app.bot.handlers.callbacks.active_downloads import (
-    active_download_callback,
-)
 from app.bot.handlers.commands.accounts import accounts_handler
 from app.bot.handlers.commands.active import active_handler
 from app.bot.handlers.commands.add_torrent import add_torrent_handler
