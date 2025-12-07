@@ -6,6 +6,8 @@ from app.bot.views import ViewResponse
 from app.database.models import Account
 from app.utils.language import Translator
 
+from app.bot.views.shared_view import get_main_keyboard
+
 
 def render_accounts_message(
     accounts: list[Account], default_account_id: int | None, translator: Translator
@@ -50,9 +52,6 @@ def render_logout_account_confirmation(account_id: int, username: str, translato
         ]
     ]
     return ViewResponse(message=message, buttons=buttons)
-
-
-from app.bot.views.shared_view import get_main_keyboard
 
 
 def render_no_account(translator: Translator) -> ViewResponse:
