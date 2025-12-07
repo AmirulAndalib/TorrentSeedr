@@ -109,3 +109,12 @@ fileTooLarge: ⚠️ The torrent file is too large. Please upload a file smaller
 signupMessage: Click the button below to create a new Seedr account.
 cannotDetermineFolder: ⚠️ Could not determine the file's folder. Cannot show details.
 fileNotFound: ⚠️ File not found in the folder.
+
+# Command Descriptions
+startCmdDesc: 👋 Start the bot
+loginCmdDesc: ➕ Log in to an account
+signupCmdDesc: 🚀 Create a new account
+infoCmdDesc: ℹ️ Get account information
+accountsCmdDesc: 🗂️ Manage your accounts
+filesCmdDesc: 📂 Browse your files
+activeCmdDesc: ⌛ View active downloads
