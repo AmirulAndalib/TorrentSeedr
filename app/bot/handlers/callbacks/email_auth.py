@@ -7,13 +7,13 @@ from telethon import events
 from app.bot.client import bot
 from app.bot.decorators import setup_handler
 from app.bot.views.login_view import (
+    render_cancelled_login_message,
     render_enter_email,
     render_enter_password_for,
     render_incorrect_password,
     render_logged_in,
     render_logging_in,
 )
-from app.bot.views.start_view import render_start_message
 from app.database import get_session
 from app.database.models import User
 from app.database.repository import AccountRepository, UserRepository
@@ -23,6 +23,7 @@ from app.utils.language import Translator
 @setup_handler()
 async def login_email_callback(event: events.CallbackQuery.Event, user: User, translator: Translator):
     """Handle email/password login callback."""
+    has_accounts = bool(user.default_account_id)
     try:
         cancel_text = translator.get("cancelBtn")
 
@@ -36,8 +37,8 @@ async def login_email_callback(event: events.CallbackQuery.Event, user: User, tr
             email = email_response.text.strip()
 
             if email == cancel_text:
-                view = render_start_message(has_accounts=bool(user.default_account_id), translator=translator)
-                await conv.send_message(translator.get("cancelled"), buttons=view.buttons)
+                view = render_cancelled_login_message(translator=translator, has_accounts=has_accounts)
+                await conv.send_message(view.message, buttons=view.buttons)
                 conv.cancel()
                 raise events.StopPropagation()
 
@@ -52,8 +53,8 @@ async def login_email_callback(event: events.CallbackQuery.Event, user: User, tr
             password = password_response.text.strip()
 
             if password == cancel_text:
-                view = render_start_message(has_accounts=bool(user.default_account_id), translator=translator)
-                await conv.send_message(translator.get("cancelled"), buttons=view.buttons)
+                view = render_cancelled_login_message(translator=translator, has_accounts=has_accounts)
+                await conv.send_message(view.message, buttons=view.buttons)
                 conv.cancel()
                 raise events.StopPropagation()
 
@@ -86,5 +87,7 @@ async def login_email_callback(event: events.CallbackQuery.Event, user: User, tr
     except TimeoutError:
         await event.respond(translator.get("conversationTimeout"))
     except AuthenticationError:
-        view = render_incorrect_password(translator)
-        await event.respond(view.message, buttons=view.buttons)
+        view = render_incorrect_password(translator, has_accounts=has_accounts)
+        await status_message.edit(view.message, buttons=view.buttons)
+    finally:
+        await event.delete()

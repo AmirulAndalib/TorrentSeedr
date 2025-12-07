@@ -44,25 +44,27 @@ def render_logging_in(translator: Translator) -> ViewResponse:
     return ViewResponse(message=translator.get("loggingIn"))
 
 
+from app.bot.views.shared_view import get_main_keyboard
+
+
 def render_logged_in(username: str, translator: Translator) -> ViewResponse:
     """Render the logged in message."""
-    keyboard = [
-        [
-            Button.text(translator.get("fileManagerBtn"), resize=True),
-            Button.text(translator.get("activeDownloadsBtn"), resize=True),
-        ],
-        [
-            Button.text(translator.get("infoBtn"), resize=True),
-            Button.text(translator.get("accountsBtn"), resize=True),
-        ],
-    ]
+    keyboard = get_main_keyboard(True, translator)
     message = translator.get("loggedInAs").format(username=username)
     return ViewResponse(message=message, buttons=keyboard)
 
 
-def render_incorrect_password(translator: Translator) -> ViewResponse:
+def render_cancelled_login_message(translator: Translator, has_accounts: bool) -> ViewResponse:
+    """Render the cancelled login message."""
+    keyboard = get_main_keyboard(has_accounts, translator)
+    message = translator.get("cancelled")
+    return ViewResponse(message=message, buttons=keyboard)
+
+
+def render_incorrect_password(translator: Translator, has_accounts: bool) -> ViewResponse:
     """Render the incorrect password message."""
-    return ViewResponse(message=translator.get("incorrectPassword"))
+    keyboard = get_main_keyboard(has_accounts, translator)
+    return ViewResponse(message=translator.get("incorrectPassword"), buttons=keyboard)
 
 
 def render_authorize_device(device_code: str, user_code: str, translator: Translator) -> ViewResponse:
