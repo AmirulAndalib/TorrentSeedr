@@ -5,8 +5,9 @@ from telethon import events
 
 from app.bot.decorators import setup_handler
 from app.bot.views.active_downloads_view import (
-    render_active_downloads_message,
-    render_no_active_downloads_message,
+    render_download_menu,
+    render_download_status,
+    render_no_downloads_message,
 )
 from app.database.models import User
 from app.utils.language import Translator
@@ -14,31 +15,26 @@ from app.utils.language import Translator
 
 @setup_handler(require_auth=True)
 async def active_handler(
-    event: events.NewMessage.Event | events.CallbackQuery.Event,
+    event: events.NewMessage.Event,
     user: User,
     translator: Translator,
     seedr_client: AsyncSeedr,
 ):
-    is_callback = isinstance(event, events.CallbackQuery.Event)
-
     contents = await seedr_client.list_contents()
 
     active_downloads = []
     if contents.torrents:
-        active_downloads = [t for t in contents.torrents if int(t.progress) < 100]
+        active_downloads = [t for t in contents.torrents]
 
     if not active_downloads:
-        view = render_no_active_downloads_message(translator)
-        if is_callback:
-            await event.edit(view.message, buttons=view.buttons)
-        else:
-            await event.respond(view.message, buttons=view.buttons)
+        view = render_no_downloads_message(translator)
+        await event.respond(view.message, buttons=view.buttons)
         return
 
-    view = render_active_downloads_message(active_downloads, translator)
-
-    if is_callback:
-        await event.edit(view.message, buttons=view.buttons)
+    # View based on number of downloads
+    if len(active_downloads) > 1:
+        view = render_download_menu(active_downloads, translator)
     else:
-        await event.respond(view.message, buttons=view.buttons)
+        view = render_download_status(active_downloads[0], translator)
 
+    await event.respond(view.message, buttons=view.buttons)

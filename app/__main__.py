@@ -24,6 +24,9 @@ from app.bot.handlers.callbacks.email_auth import login_email_callback
 from app.bot.handlers.callbacks.link import file_link_callback, folder_link_callback
 from app.bot.handlers.callbacks.navigation import file_callback, folder_callback
 from app.bot.handlers.callbacks.playlist import playlist_callback
+from app.bot.handlers.callbacks.active_downloads import (
+    active_download_callback,
+)
 from app.bot.handlers.commands.accounts import accounts_handler
 from app.bot.handlers.commands.active import active_handler
 from app.bot.handlers.commands.add_torrent import add_torrent_handler
@@ -84,6 +87,9 @@ async def main():
 
     # Callback handlers - Playlist
     bot.add_event_handler(playlist_callback, events.CallbackQuery(pattern=b"playlist_.*"))
+
+    # Callback handlers - Active Downloads
+    bot.add_event_handler(active_download_callback, events.CallbackQuery(pattern=b"active_.*"))
 
     # This handler catches text button clicks and other text messages.
     bot.add_event_handler(text_message_handler, events.NewMessage(incoming=True))

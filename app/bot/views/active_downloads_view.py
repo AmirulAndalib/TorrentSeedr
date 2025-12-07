@@ -1,32 +1,45 @@
 """Views for active downloads."""
 
+from telethon import Button
+
 from app.bot.views import ViewResponse
-from app.utils import format_size, format_time, progress_bar
+from app.utils import format_size, progress_bar
 from app.utils.language import Translator
 
 
-def render_active_downloads_message(active_downloads, translator: Translator) -> ViewResponse:
-    message = f"<b>{translator.get('activeDownloadsBtn')}</b>\n\n"
-    for idx, torrent in enumerate(active_downloads, 1):
-        name = torrent.name
-        progress = torrent.progress
-        size = torrent.size
-        downloaded = (progress / 100) * size if size else 0
-        progress_visual = progress_bar(progress)
-        message += f"<b>{idx}. {name}</b>\n"
-        message += f"   {progress_visual} {progress:.1f}%\n"
-        message += f"   {translator.get('sizeLabel')}: {format_size(downloaded)} / {format_size(size)}\n"
-        if torrent.download_rate:
-            speed = format_size(torrent.download_rate)
-            message += f"   {translator.get('speedLabel')}: {speed}/s\n"
-        if torrent.eta:
-            eta = format_time(torrent.eta)
-            message += f"   {translator.get('etaLabel')}: {eta}\n"
-        message += "\n"
+def render_download_status(download, translator: Translator) -> ViewResponse:
+    """Renders the detailed progress message for a single download."""
+    name = download.name
+    progress = int(download.progress)
+    size = download.size
+    downloaded = (progress / 100) * size if size else 0
+    progress_visual = progress_bar(progress)
 
+    message = f"<b>{translator.get('activeDownloadsBtn')}</b>\n\n"
+    message += f"<b>{name}</b>\n"
+    message += f"   {progress_visual} {float(progress):.1f}%\n"
+    message += f"   {translator.get('sizeLabel')}: {format_size(downloaded)} / {format_size(size)}\n"
+    if download.download_rate:
+        speed = format_size(download.download_rate)
+        message += f"   {translator.get('speedLabel')}: {speed}/s\n"
     return ViewResponse(message=message)
 
 
-def render_no_active_downloads_message(translator: Translator) -> ViewResponse:
+def render_download_menu(active_downloads, translator: Translator) -> ViewResponse:
+    """Render a menu of buttons for multiple active downloads."""
+    message = f"<b>{translator.get('activeDownloadsBtn')}</b>\n\n"
+    message += f"{translator.get('selectDownload')}"
+    buttons = []
+    for download in active_downloads:
+        button_text = (
+            f"{download.name[:30]}... ({int(download.progress)}%)"
+            if len(download.name) > 30
+            else f"{download.name} ({int(download.progress)}%)"
+        )
+        buttons.append([Button.inline(button_text, f"active_{download.id}".encode())])
+    return ViewResponse(message=message, buttons=buttons)
+
+
+def render_no_downloads_message(translator: Translator) -> ViewResponse:
     """Render the message when there are no active downloads."""
     return ViewResponse(message=translator.get("noActiveDownloads"))
