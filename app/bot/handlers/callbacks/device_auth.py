@@ -9,7 +9,6 @@ from app.bot.views.login_view import (
     render_auth_failed,
     render_authorize_device,
     render_logged_in,
-    render_logging_in,
 )
 from app.database import get_session
 from app.database.models import User
