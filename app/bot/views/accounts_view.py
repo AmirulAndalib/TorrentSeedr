@@ -25,16 +25,15 @@ def render_accounts_message(
         ]
         buttons.append(row)
 
-    add_account_text = translator.get("addAccountBtn")
-    buttons.append([Button.inline(add_account_text, b"login")])
-    buttons.append([Button.url(translator.get("signupBtn"), "https://www.seedr.cc")])
+
 
     return ViewResponse(message=message, buttons=buttons)
 
 
 def render_account_not_found(translator: Translator) -> ViewResponse:
     """Render the account not found message."""
-    return ViewResponse(message=translator.get("accountNotFound"))
+    keyboard = get_main_keyboard(has_accounts=False, translator=translator)
+    return ViewResponse(message=translator.get("accountNotFound"), buttons=keyboard)
 
 
 def render_logout_account_confirmation(account_id: int, username: str, translator: Translator) -> ViewResponse:
@@ -51,12 +50,10 @@ def render_logout_account_confirmation(account_id: int, username: str, translato
     return ViewResponse(message=message, buttons=buttons)
 
 
+from app.bot.views.shared_view import get_main_keyboard
+
+
 def render_no_account(translator: Translator) -> ViewResponse:
     """Render the no account message."""
-    keyboard = [
-        [
-            Button.text(translator.get("loginBtn"), resize=True),
-            Button.text(translator.get("signupBtn"), resize=True),
-        ],
-    ]
+    keyboard = get_main_keyboard(has_accounts=False, translator=translator)
     return ViewResponse(message=translator.get("noAccount"), buttons=keyboard)

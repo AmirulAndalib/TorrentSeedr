@@ -9,6 +9,7 @@ from seedrcc.exceptions import APIError, AuthenticationError, SeedrError
 from structlog import get_logger
 from telethon import errors, events
 
+from app.bot.views.accounts_view import render_no_account
 from app.database import get_session
 from app.database.repository import AccountRepository, UserRepository
 from app.exceptions import NoAccountError
@@ -47,11 +48,11 @@ def setup_handler(require_auth: bool = False):
 
                     if require_auth:
                         if not user.default_account_id:
-                            raise NoAccountError(translator.get("noAccount"))
+                            raise NoAccountError()
 
                         account = await AccountRepository(session).get_by_id(user.default_account_id, user.id)
                         if not account:
-                            raise NoAccountError(translator.get("noAccount"))
+                            raise NoAccountError()
 
                         token_instance = Token.from_base64(account.token)
                         callback = functools.partial(on_token_refresh, account_id=account.id, user_id=user.id)
@@ -69,13 +70,13 @@ def setup_handler(require_auth: bool = False):
             except events.StopPropagation:
                 raise
 
-            except NoAccountError as e:
+            except NoAccountError:
                 if translator:
-                    error_message = str(e)
+                    view = render_no_account(translator)
                     if isinstance(event, events.CallbackQuery.Event):
-                        await event.answer(error_message, alert=True)
+                        await event.edit(view.message, buttons=view.buttons)
                     else:
-                        await event.respond(error_message)
+                        await event.respond(view.message, buttons=view.buttons)
                 raise events.StopPropagation()
 
             except AuthenticationError as e:
