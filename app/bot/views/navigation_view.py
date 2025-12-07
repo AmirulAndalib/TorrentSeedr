@@ -133,7 +133,7 @@ def render_file_details_message(
         buttons.append(
             [
                 Button.inline(
-                    f"{translator.get('playlistBtn')} ({playlist_format.upper()})",
+                    f"{translator.get('playlistBtn')}",
                     f"playlist_{playlist_format}_file_{file_id}".encode(),
                 )
             ]
