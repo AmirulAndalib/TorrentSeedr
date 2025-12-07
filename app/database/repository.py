@@ -38,24 +38,15 @@ class UserRepository:
         await self.session.flush()
         return user
 
-    async def update_settings(
-        self,
-        user_id: int,
-        language: str | None = None,
-        playlist_format: str | None = None,
-        default_account_id: int | None = None,
-    ) -> User | None:
+    async def update_settings(self, user_id: int, **kwargs) -> User | None:
         """Update user settings."""
         user = await self.get_by_id(user_id)
         if not user:
             return None
 
-        if language is not None:
-            user.language = language
-        if playlist_format is not None:
-            user.playlist_format = playlist_format
-        if default_account_id is not None:
-            user.default_account_id = default_account_id
+        for key, value in kwargs.items():
+            if hasattr(user, key):
+                setattr(user, key, value)
 
         await self.session.flush()
         return user
