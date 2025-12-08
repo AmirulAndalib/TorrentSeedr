@@ -53,9 +53,10 @@ emailLabel: "Email:"
 premiumLabel: "Premium:"
 storageLabel: Storage
 usedLabel: "Used:"
-bandwidthUsedLabel: "Bandwidth Used (monthly):"
 invitesAvailableLabel: "Invites available:"
-referralLinkLabel: "Referral Link:"
+bandwidthUsedTotalLabel: "Total bandwidth used:"
+inviteLinkLabel: "Invite Link:"
+invitesAcceptedLabel: "Invites Accepted:"
 pageLabel: Page
 speedLabel: Speed
 etaLabel: ETA
