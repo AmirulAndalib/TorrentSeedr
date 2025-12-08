@@ -2,7 +2,7 @@
 
 from typing import TYPE_CHECKING
 
-from sqlalchemy import Boolean, ForeignKey, Integer, String
+from sqlalchemy import Boolean, ForeignKey, Integer, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.models.base import Base, TimestampMixin
@@ -14,6 +14,9 @@ if TYPE_CHECKING:
 
 class Account(Base, TimestampMixin):
     __tablename__ = "accounts"
+    __table_args__ = (
+        UniqueConstraint("seedr_account_id", "user_id", name="uq_seedr_account_user"),
+    )
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     user_id: Mapped[int] = mapped_column(

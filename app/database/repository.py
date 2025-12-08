@@ -84,7 +84,7 @@ class AccountRepository:
         self.session = session
 
     async def get_by_id(self, account_id: int, user_id: int) -> Account | None:
-        """Get account by ID, filtered by user_id for security."""
+        """Get account by ID."""
         result = await self.session.execute(select(Account).where(Account.id == account_id, Account.user_id == user_id))
         return result.scalar_one_or_none()
 
@@ -95,31 +95,35 @@ class AccountRepository:
         )
         return list(result.scalars().all())
 
+    async def get_by_seedr_account_id(self, seedr_account_id: str, user_id: int) -> Account | None:
+        """Get account by Seedr account ID and user ID."""
+        result = await self.session.execute(
+            select(Account).where(Account.seedr_account_id == seedr_account_id, Account.user_id == user_id)
+        )
+        return result.scalar_one_or_none()
+
     async def create(
         self,
         user_id: int,
         seedr_account_id: str,
-        token: str,
-        username: str | None = None,
-        email: str | None = None,
-        password: str | None = None,
-        cookie: str | None = None,
-        is_premium: bool = False,
-        invites_remaining: int = 0,
+        **kwargs,
     ) -> Account:
-        """Create a new account."""
-        account = Account(
-            user_id=user_id,
-            seedr_account_id=seedr_account_id,
-            token=token,
-            username=username,
-            email=email,
-            password=password,
-            cookie=cookie,
-            is_premium=is_premium,
-            invites_remaining=invites_remaining,
-        )
-        self.session.add(account)
+        """Update or create an account."""
+        account = await self.get_by_seedr_account_id(seedr_account_id, user_id)
+        if account:
+            # Update existing account
+            for key, value in kwargs.items():
+                if hasattr(account, key):
+                    setattr(account, key, value)
+        else:
+            # Create new account
+            account = Account(
+                user_id=user_id,
+                seedr_account_id=seedr_account_id,
+                **kwargs,
+            )
+            self.session.add(account)
+
         await self.session.flush()
         return account
 
