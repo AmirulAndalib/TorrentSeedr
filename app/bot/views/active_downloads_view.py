@@ -1,4 +1,5 @@
 """Views for active downloads."""
+from textwrap import dedent
 
 from telethon import Button
 
@@ -15,22 +16,28 @@ def render_download_status(download, translator: Translator) -> ViewResponse:
     downloaded = (progress / 100) * size if size else 0
     progress_visual = progress_bar(progress)
 
-    message = f"<b>{translator.get('activeDownloadsBtn')}</b>\n\n"
-    message += f"<b>{name}</b>\n"
-    message += f"   {progress_visual} {float(progress):.1f}%\n"
-    message += f"   {translator.get('sizeLabel')}: {format_size(downloaded)} / {format_size(size)}\n"
+    message = dedent(f"""
+        <b>{translator.get('activeDownloadsBtn')}</b>
+
+        <b>{name}</b>
+           {progress_visual} {float(progress):.1f}%
+           {translator.get('sizeLabel')}: {format_size(downloaded)} / {format_size(size)}
+    """)
     if download.download_rate:
         speed = format_size(download.download_rate)
-        message += f"   {translator.get('speedLabel')}: {speed}/s\n"
+        message += f"\n   {translator.get('speedLabel')}: {speed}/s"
 
     buttons = [[Button.inline(translator.get("cancelBtn"), f"cancel_download_{download.id}".encode())]]
-    return ViewResponse(message=message, buttons=buttons)
+    return ViewResponse(message=message.strip(), buttons=buttons)
 
 
 def render_download_menu(active_downloads, translator: Translator) -> ViewResponse:
     """Render a menu of buttons for multiple active downloads."""
-    message = f"<b>{translator.get('activeDownloadsBtn')}</b>\n\n"
-    message += f"{translator.get('selectDownload')}"
+    message = dedent(f"""
+        <b>{translator.get('activeDownloadsBtn')}</b>
+
+        {translator.get('selectDownload')}
+    """)
     buttons = []
     for download in active_downloads:
         button_text = (
@@ -39,7 +46,7 @@ def render_download_menu(active_downloads, translator: Translator) -> ViewRespon
             else f"{download.name} ({int(download.progress)}%)"
         )
         buttons.append([Button.inline(button_text, f"active_{download.id}".encode())])
-    return ViewResponse(message=message, buttons=buttons)
+    return ViewResponse(message=message.strip(), buttons=buttons)
 
 
 def render_no_downloads_message(translator: Translator) -> ViewResponse:
