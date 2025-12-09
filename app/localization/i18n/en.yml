@@ -35,11 +35,11 @@ noBtn: ❌ No
 
 ## Labels
 rootLabel: Root
-foldersLabel: Folders
-filesLabel: Files
+foldersLabel: "Folders:"
+filesLabel: "Files:"
 yesLabel: yes
 noLabel: No
-totalSizeLabel: Total Size
+totalSizeLabel: "Total Size:"
 videoLabel: Video
 audioLabel: Audio
 fileLabel: File
@@ -47,19 +47,18 @@ sizeLabel: Size
 typeLabel: Type
 downloadLinkLabel: Download Link
 folderDownloadLinkLabel: Folder Download Link
-totalAccountsLabel: Total Accounts
+totalAccountsLabel: "Total Accounts:"
 usernameLabel: "Username:"
 emailLabel: "Email:"
 premiumLabel: "Premium:"
-storageLabel: Storage
 usedLabel: "Used:"
 invitesAvailableLabel: "Invites available:"
 bandwidthUsedTotalLabel: "Total bandwidth used:"
 inviteLinkLabel: "Invite Link:"
 invitesAcceptedLabel: "Invites Accepted:"
-pageLabel: Page
-speedLabel: Speed
-etaLabel: ETA
+lastUpdatedLabel: "Last Updated:"
+pageLabel: "Page:"
+speedLabel: "Speed:"
 
 ## Messages
 selectLanguage: "Please select your preferred language:"

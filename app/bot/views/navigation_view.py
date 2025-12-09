@@ -6,7 +6,7 @@ from telethon import Button
 
 from app.bot.views import ViewResponse
 from app.config import settings
-from app.utils import format_size
+from app.utils import format_date, format_size
 from app.utils.language import Translator
 
 
@@ -15,23 +15,24 @@ def _build_folder_header(
 ) -> str:
     """Builds the text header for the folder contents message."""
     if folder_id == "0":
-        message_prefix = dedent(f"""
-            <b>{translator.get("fileManagerBtn")} - {translator.get("rootLabel")}</b>
-
-            <i>{len(contents.folders)} {translator.get("foldersLabel")}</i>
-        """)
+        name = f"{translator.get('fileManagerBtn')} - {translator.get('rootLabel')}"
+        total_size = contents.space_used
     else:
-        message_prefix = dedent(f"""
-            <b>{translator.get("folderEmoji")} {contents.name}</b>
+        name = f"{translator.get('folderEmoji')} {contents.name}"
+        total_size = sum(f.size for f in contents.files) + sum(f.size for f in contents.folders)
 
-            {translator.get("foldersLabel")}: {len(contents.folders)}
-            {translator.get("filesLabel")}: {len(contents.files)}
-            {translator.get("totalSizeLabel")}: {format_size(sum(f.size for f in contents.files))}
-        """)
+    message_prefix = dedent(f"""
+        <b>{name}</b>
+
+        <i>{translator.get("foldersLabel")} {len(contents.folders)}
+        {translator.get("filesLabel")} {len(contents.files)}
+        {translator.get("totalSizeLabel")} {format_size(total_size)}
+        {translator.get("lastUpdatedLabel")} {format_date(contents.last_update)}</i>
+    """)
 
     message_pagination = ""
     if total_pages > 1:
-        message_pagination = f"\n{translator.get('pageLabel')}: {page}/{total_pages}"
+        message_pagination = f"\n{translator.get('pageLabel')} {page}/{total_pages}"
 
     return f"{message_prefix.strip()}{message_pagination}"
 

@@ -1,6 +1,14 @@
 """Formatters for converting bytes, time, and creating progress bars."""
 
 import math
+from datetime import datetime
+
+
+def format_date(dt: datetime | None) -> str:
+    """Convert datetime into human-readable date string."""
+    if not dt:
+        return "N/A"
+    return dt.strftime("%Y-%m-%d %H:%M")
 
 
 def format_size(byte: int | float) -> str:

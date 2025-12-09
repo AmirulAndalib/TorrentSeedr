@@ -1,4 +1,5 @@
 """Views for accounts management"""
+
 from textwrap import dedent
 
 from telethon import Button
@@ -14,7 +15,7 @@ def render_accounts_message(
 ) -> ViewResponse:
     """Render the accounts management message."""
     message = f"<b>{translator.get('accountsBtn')}</b>\n\n"
-    message += f"{translator.get('totalAccountsLabel')}: {len(accounts)}"
+    message += f"{translator.get('totalAccountsLabel')} {len(accounts)}"
 
     buttons = []
     for account in accounts:
@@ -43,11 +44,11 @@ def render_account_not_found(translator: Translator) -> ViewResponse:
 def render_logout_account_confirmation(account_id: int, username: str, translator: Translator) -> ViewResponse:
     """Render the logout account confirmation message."""
     message = dedent(f"""
-        <b>{translator.get('confirmLogout')}</b>
+        <b>{translator.get("confirmLogout")}</b>
 
-        {translator.get('confirmLogoutAccount').format(username=username)}
+        {translator.get("confirmLogoutAccount").format(username=username)}
 
-        {translator.get('actionCannotBeUndoneLogout')}
+        {translator.get("actionCannotBeUndoneLogout")}
     """)
     buttons = [
         [
