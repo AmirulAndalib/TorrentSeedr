@@ -1,5 +1,4 @@
 from textwrap import dedent
-from typing import List
 
 from seedrcc.models import File, Folder, ListContentsResult
 from telethon import Button
@@ -26,7 +25,7 @@ def _build_folder_header(
 
         <i>{translator.get("foldersLabel")} {len(contents.folders)}
         {translator.get("filesLabel")} {len(contents.files)}
-        {translator.get("totalSizeLabel")} {format_size(total_size)}
+        {translator.get("sizeLabel")} {format_size(total_size)}
         {translator.get("lastUpdatedLabel")} {format_date(contents.last_update)}</i>
     """)
 
@@ -37,7 +36,7 @@ def _build_folder_header(
     return f"{message_prefix.strip()}{message_pagination}"
 
 
-def _build_item_buttons(folders: List[Folder], files: List[File], folder_id: str, translator: Translator) -> list:
+def _build_item_buttons(folders: list[Folder], files: list[File], folder_id: str, translator: Translator) -> list:
     """Builds the list of buttons for files and folders."""
     buttons = []
     for folder in folders:
@@ -51,15 +50,12 @@ def _build_item_buttons(folders: List[Folder], files: List[File], folder_id: str
         )
 
     for file in files:
-        callback_parts = [f"file_{file.folder_file_id}", f"parent_{folder_id}"]
         emoji = translator.get("fileEmoji")
         if file.play_video:
             emoji = translator.get("videoEmoji")
-            callback_parts.append("type_video")
         elif file.play_audio:
             emoji = translator.get("audioEmoji")
-            callback_parts.append("type_audio")
-        buttons.append([Button.inline(f"{emoji} {file.name}", "_".join(callback_parts).encode())])
+        buttons.append([Button.inline(f"{emoji} {file.name}", f"file_{file.folder_file_id}_parent_{folder_id}")])
 
     return buttons
 
@@ -127,26 +123,24 @@ def render_folder_contents_message(
 
 def render_file_details_message(
     file_metadata: File,
-    is_video: bool,
-    is_audio: bool,
-    file_id: str,
-    parent_folder_id: str | None,
     playlist_format: str,
     translator: Translator,
 ) -> ViewResponse:
     """Render the file details message and buttons."""
-    file_type = (
-        f"{translator.get('videoEmoji')} {translator.get('videoLabel')}"
-        if is_video
-        else f"{translator.get('audioEmoji')} {translator.get('audioLabel')}"
-        if is_audio
-        else f"{translator.get('fileEmoji')} {translator.get('fileLabel')}"
+    file_id = file_metadata.folder_file_id
+    emoji = (
+        translator.get("videoEmoji")
+        if file_metadata.play_video
+        else translator.get("audioEmoji")
+        if file_metadata.play_audio
+        else translator.get("fileEmoji")
     )
-    message = dedent(f"""
-        <b>{translator.get("fileEmoji")} {file_metadata.name}</b>
 
-        {translator.get("sizeLabel")}: {format_size(file_metadata.size)}
-        {translator.get("typeLabel")}: {file_type}
+    message = dedent(f"""
+        <b>{emoji} {file_metadata.name}</b>
+
+        <i>{translator.get("sizeLabel")} {format_size(file_metadata.size)}
+        {translator.get("lastUpdatedLabel")} {format_date(file_metadata.last_update)}</i>
     """)
 
     buttons = [
@@ -155,7 +149,7 @@ def render_file_details_message(
             Button.inline(translator.get("getLinkBtn"), f"file_link_{file_id}".encode()),
         ]
     ]
-    if is_video or is_audio:
+    if file_metadata.play_audio or file_metadata.play_video:
         buttons.append(
             [
                 Button.inline(
@@ -165,7 +159,7 @@ def render_file_details_message(
             ]
         )
 
-    back_button = Button.inline(translator.get("backBtn"), f"folder_{parent_folder_id or '0'}".encode())
+    back_button = Button.inline(translator.get("backBtn"), f"folder_{file_metadata.folder_id or '0'}".encode())
     buttons.append([back_button])
 
     return ViewResponse(message=message.strip(), buttons=buttons)

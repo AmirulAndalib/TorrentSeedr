@@ -50,10 +50,6 @@ async def file_callback(
 
     file_id = params.get("file", "")
     parent_folder_id = params.get("parent")
-    media_type = params.get("type")  # e.g., "video", "audio", or None
-
-    is_video = media_type == "video"
-    is_audio = media_type == "audio"
 
     if not parent_folder_id:
         await event.answer(translator.get("cannotDetermineFolder"), alert=True)
@@ -69,10 +65,6 @@ async def file_callback(
     playlist_format = user.playlist_format or "m3u"
     view = render_file_details_message(
         file_metadata=file_metadata,
-        is_video=is_video,
-        is_audio=is_audio,
-        file_id=file_id,
-        parent_folder_id=parent_folder_id,
         playlist_format=playlist_format,
         translator=translator,
     )

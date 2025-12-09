@@ -39,7 +39,6 @@ foldersLabel: "Folders:"
 filesLabel: "Files:"
 yesLabel: yes
 noLabel: No
-totalSizeLabel: "Total Size:"
 videoLabel: Video
 audioLabel: Audio
 fileLabel: File
