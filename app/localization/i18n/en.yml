@@ -35,17 +35,14 @@ noBtn: ❌ No
 
 ## Labels
 rootLabel: Root
-foldersLabel: "Folders:"
-filesLabel: "Files:"
 yesLabel: yes
 noLabel: No
-videoLabel: Video
-audioLabel: Audio
-fileLabel: File
-sizeLabel: Size
-typeLabel: Type
 downloadLinkLabel: Download Link
 folderDownloadLinkLabel: Folder Download Link
+foldersLabel: "Folders:"
+filesLabel: "Files:"
+sizeLabel: "Size:"
+storageLabel: "Storage:"
 totalAccountsLabel: "Total Accounts:"
 usernameLabel: "Username:"
 emailLabel: "Email:"
@@ -116,7 +113,7 @@ storePasswordPrompt: |
 
   Storing your password will allow the bot to automatically refresh your account token if it expires. This is optional.
 
-# Command Descriptions
+## Command Descriptions
 startCmdDesc: 👋 Start the bot
 loginCmdDesc: ➕ Log in to an account
 signupCmdDesc: 🚀 Create a new account

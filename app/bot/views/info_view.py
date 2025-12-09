@@ -30,7 +30,7 @@ def render_account_info(account_info: AccountInfo, translator: Translator) -> Vi
         <b>{translator.get("invitesAvailableLabel")}</b> {invites_remaining} / {account_info.max_invites}
         <b>{translator.get("invitesAcceptedLabel")}</b> {invites_accepted}
 
-        {format_size(space_used)} / {format_size(space_max)}
+        <b>{translator.get("storageLabel")}</b> {format_size(space_used)} / {format_size(space_max)}
         {space_bar_visual}
     """)
 
