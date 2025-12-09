@@ -9,6 +9,7 @@ from app.bot.views.active_downloads_view import (
     render_download_status,
     render_no_downloads_message,
 )
+from app.bot.views.shared_view import render_processing_message
 from app.database.models import User
 from app.utils.language import Translator
 
@@ -20,6 +21,9 @@ async def active_handler(
     translator: Translator,
     seedr_client: AsyncSeedr,
 ):
+    processing_view = render_processing_message(translator)
+    status_message = await event.respond(processing_view.message)
+
     contents = await seedr_client.list_contents()
 
     active_downloads = []
@@ -28,7 +32,7 @@ async def active_handler(
 
     if not active_downloads:
         view = render_no_downloads_message(translator)
-        await event.respond(view.message, buttons=view.buttons)
+        await status_message.edit(view.message, buttons=view.buttons)
         return
 
     # View based on number of downloads
@@ -37,4 +41,4 @@ async def active_handler(
     else:
         view = render_download_status(active_downloads[0], translator)
 
-    await event.respond(view.message, buttons=view.buttons)
+    await status_message.edit(view.message, buttons=view.buttons)

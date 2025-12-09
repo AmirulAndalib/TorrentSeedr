@@ -2,6 +2,7 @@
 
 from telethon import Button
 
+from app.bot.views import ViewResponse
 from app.utils.language import Translator
 
 
@@ -26,3 +27,8 @@ def get_main_keyboard(has_accounts: bool, translator: Translator) -> list:
             ],
         ]
     return keyboard
+
+
+def render_processing_message(translator: Translator) -> ViewResponse:
+    """Render the processing message."""
+    return ViewResponse(message=translator.get("processing"))
