@@ -6,9 +6,9 @@ from app.bot.views.add_torrent_view import (
     render_add_torrent_failure,
     render_add_torrent_success,
     render_file_too_large_message,
-    render_processing_message,
     render_wrong_torrent_file_message,
 )
+from app.bot.views.shared_view import render_processing_message
 from app.config import settings
 from app.database.models import User
 from app.utils import extract_magnet_from_text, format_size

@@ -66,7 +66,7 @@ async def main():
     bot.add_event_handler(accounts_handler, events.NewMessage(pattern="/accounts"))
     bot.add_event_handler(files_handler, events.NewMessage(pattern="/files"))
     bot.add_event_handler(active_handler, events.NewMessage(pattern="/active"))
-    bot.add_event_handler(add_torrent_handler, events.NewMessage(pattern=r".*magnet:\?xt=.*"))
+    bot.add_event_handler(add_torrent_handler, events.NewMessage(pattern=r"(?s).*magnet:\?xt=[^\s]+.*"))
 
     # Callback handlers - Account
     bot.add_event_handler(authorize_device_callback, events.CallbackQuery(pattern=b"authorize_device"))
@@ -91,9 +91,7 @@ async def main():
 
     # Callback handlers - Active Downloads
     bot.add_event_handler(active_download_callback, events.CallbackQuery(pattern=b"active_.*"))
-    bot.add_event_handler(
-        cancel_download_callback, events.CallbackQuery(pattern=b"cancel_download_.*")
-    )
+    bot.add_event_handler(cancel_download_callback, events.CallbackQuery(pattern=b"cancel_download_.*"))
 
     # This handler catches text button clicks and other text messages.
     bot.add_event_handler(text_message_handler, events.NewMessage(incoming=True))
