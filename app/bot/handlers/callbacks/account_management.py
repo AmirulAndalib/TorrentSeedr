@@ -118,5 +118,4 @@ async def confirm_logout_account_callback(
 @setup_handler()
 async def cancel_logout_callback(event: events.CallbackQuery.Event, user: User, translator: Translator):
     """Handle cancel logout button - return to accounts view."""
-    await event.answer(translator.get("cancelled"), alert=False)
     await accounts_handler(event)
