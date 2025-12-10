@@ -56,6 +56,9 @@ invitesAcceptedLabel: "Invites Accepted:"
 lastUpdatedLabel: "Last Updated:"
 pageLabel: "Page:"
 speedLabel: "Speed:"
+progressLabel: "Progress:"
+seedersLabel: "Seeders:"
+leechersLabel: "Leechers:"
 
 ## Messages
 selectLanguage: "Please select your preferred language:"
@@ -109,6 +112,7 @@ fileTooLarge: ⚠️ The torrent file is too large. Please upload a file smaller
 signupMessage: Click the button below to create a new Seedr account.
 cannotDetermineFolder: ⚠️ Could not determine the file's folder. Cannot show details.
 fileNotFound: ⚠️ File not found in the folder.
+pausedDownloadWarning: "⚠️ This download is paused, likely due to a lack of seeders. You can try adding a new torrent or retrying later."
 storePasswordPrompt: |
   <b>Do you want to store your password?</b>
 
