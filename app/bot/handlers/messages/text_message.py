@@ -1,6 +1,4 @@
-"""
-Message handlers for incoming text messages from reply keyboard.
-"""
+"""Message handlers for incoming text messages from reply keyboard."""
 
 from telethon import events
 

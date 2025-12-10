@@ -3,7 +3,7 @@
 from telethon import events
 
 from app.bot.decorators import setup_handler
-from app.bot.handlers.commands.add_torrent import add_torrent_handler
+from app.bot.handlers.messages.add_torrent import add_torrent_handler
 from app.bot.utils.commands import set_user_commands
 from app.bot.views.start_view import render_start_message
 from app.database.models import User

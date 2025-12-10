@@ -1,3 +1,5 @@
+"""Views for navigating folders and files."""
+
 from textwrap import dedent
 
 from seedrcc.models import File, Folder, ListContentsResult

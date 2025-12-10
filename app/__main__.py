@@ -30,13 +30,13 @@ from app.bot.handlers.callbacks.navigation import file_callback, folder_callback
 from app.bot.handlers.callbacks.playlist import playlist_callback
 from app.bot.handlers.commands.accounts import accounts_handler
 from app.bot.handlers.commands.active import active_handler
-from app.bot.handlers.commands.add_torrent import add_torrent_handler, handle_torrent_file
+from app.bot.handlers.messages.add_torrent import add_torrent_handler, handle_torrent_file
 from app.bot.handlers.commands.files import files_handler
 from app.bot.handlers.commands.info import info_handler
 from app.bot.handlers.commands.login import login_handler
 from app.bot.handlers.commands.signup import signup_handler
 from app.bot.handlers.commands.start import start_handler
-from app.bot.handlers.messages import text_message_handler
+from app.bot.handlers.messages.text_message import text_message_handler
 from app.config import settings
 from app.database import close_db, init_db
 

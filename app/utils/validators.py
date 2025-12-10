@@ -1,3 +1,5 @@
+"""Utility functions for validating and extracting data from strings."""
+
 import re
 
 

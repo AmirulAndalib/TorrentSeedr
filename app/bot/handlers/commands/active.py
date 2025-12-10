@@ -1,4 +1,4 @@
-"""Active command handler."""
+"""Active downloads command handler."""
 
 from seedrcc import AsyncSeedr
 from telethon import events

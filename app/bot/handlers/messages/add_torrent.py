@@ -1,3 +1,5 @@
+"""Handler for adding torrents via magnet links or torrent files."""
+
 from seedrcc import AsyncSeedr
 from telethon import events
 
