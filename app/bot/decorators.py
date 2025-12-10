@@ -2,6 +2,7 @@
 
 import functools
 import inspect
+from collections.abc import Callable, Coroutine
 from typing import Any
 
 from seedrcc import AsyncSeedr, Token
@@ -9,109 +10,110 @@ from seedrcc.exceptions import APIError, AuthenticationError, SeedrError
 from structlog import get_logger
 from telethon import errors, events
 
+from app.bot.views import ViewResponse
 from app.bot.views.accounts_view import render_no_account
 from app.database import get_session
+from app.database.models import User
 from app.database.repository import AccountRepository, UserRepository
 from app.exceptions import NoAccountError
 from app.services.seedr import on_token_refresh
-from app.utils.language import get_language_service
+from app.utils.language import Translator, get_language_service
 
 logger = get_logger(__name__)
 language_service = get_language_service()
 
 
+async def _inject_dependencies(
+    func: Callable[..., Coroutine],
+    event: events.NewMessage.Event | events.CallbackQuery.Event,
+    user: User,
+    translator: Translator,
+    require_auth: bool,
+) -> dict:
+    """Injects dependencies, including the Seedr client if required."""
+    dependencies = {
+        "event": event,
+        "user": user,
+        "translator": translator,
+        "client": event.client,
+    }
+
+    if require_auth:
+        async with get_session() as session:
+            if not user.default_account_id:
+                raise NoAccountError()
+
+            account = await AccountRepository(session).get_by_id(user.default_account_id, user.id)
+            if not account:
+                raise NoAccountError()
+
+            token_instance = Token.from_base64(account.token)
+            callback = functools.partial(on_token_refresh, account_id=account.id, user_id=user.id)
+            seedr_client = AsyncSeedr(token=token_instance, on_token_refresh=callback)
+            dependencies["seedr_client"] = seedr_client
+
+    handler_signature = inspect.signature(func)
+    return {key: value for key, value in dependencies.items() if key in handler_signature.parameters}
+
+
+async def _handle_exception(
+    event: events.NewMessage.Event | events.CallbackQuery.Event,
+    translator: Translator,
+    exception: Exception,
+):
+    """Handle exceptions, log them, and send an appropriate response to the user."""
+    if isinstance(exception, events.StopPropagation):
+        raise exception
+
+    view = None
+
+    if isinstance(exception, NoAccountError):
+        view = render_no_account(translator)
+
+    elif isinstance(exception, AuthenticationError):
+        error_text = str(exception) or translator.get("tokenExpired")
+        view = ViewResponse(message=error_text)
+
+    elif isinstance(exception, (APIError, SeedrError)):
+        error_text = translator.get("somethingWrong")
+        view = ViewResponse(message=error_text)
+        logger.error(f"APIError/SeedrError: {exception}", exc_info=True)
+
+    elif isinstance(exception, errors.AlreadyInConversationError):
+        pass
+
+    # Any other unhandled exceptions
+    else:
+        error_text = translator.get("somethingWrong")
+        view = ViewResponse(message=error_text)
+        logger.error(f"Unhandled exception: {exception}", exc_info=True)
+
+    if view:
+        if isinstance(event, events.CallbackQuery.Event):
+            await event.edit(view.message, buttons=view.buttons)
+        else:
+            await event.respond(view.message, buttons=view.buttons)
+
+    raise events.StopPropagation()
+
+
 def setup_handler(require_auth: bool = False):
     """
-    The primary decorator for all handlers. It provides:
-    1.  Session management.
-    2.  User and translator dependency injection.
-    3.  Optional authentication and Seedr client injection.
-    TODO: Refactor into multiple function but a single decorator
+    Primary decorator for handlers. It provides dependency injection and centralized exception handling.
     """
 
     def decorator(func):
         @functools.wraps(func)
         async def wrapper(event: events.NewMessage.Event | events.CallbackQuery.Event, *args: Any, **kwargs: Any):
-            translator = None
-
             try:
                 async with get_session() as session:
                     user = await UserRepository(session).get_or_create(event.sender_id)
                     translator = language_service.get_translator(user.language)
 
-                    dependencies = {
-                        "event": event,
-                        "user": user,
-                        "translator": translator,
-                        "client": event.client,
-                    }
-
-                    if require_auth:
-                        if not user.default_account_id:
-                            raise NoAccountError()
-
-                        account = await AccountRepository(session).get_by_id(user.default_account_id, user.id)
-                        if not account:
-                            raise NoAccountError()
-
-                        token_instance = Token.from_base64(account.token)
-                        callback = functools.partial(on_token_refresh, account_id=account.id, user_id=user.id)
-                        seedr_client = AsyncSeedr(token=token_instance, on_token_refresh=callback)
-
-                        dependencies["seedr_client"] = seedr_client
-
-                    handler_signature = inspect.signature(func)
-                    final_kwargs = {
-                        key: value for key, value in dependencies.items() if key in handler_signature.parameters
-                    }
-
-                    return await func(**final_kwargs)
-
-            except events.StopPropagation:
-                raise
-
-            except NoAccountError:
-                if translator:
-                    view = render_no_account(translator)
-                    if isinstance(event, events.CallbackQuery.Event):
-                        await event.edit(view.message, buttons=view.buttons)
-                    else:
-                        await event.respond(view.message, buttons=view.buttons)
-                raise events.StopPropagation()
-
-            except AuthenticationError as e:
-                if translator:
-                    error_message = str(e) or translator.get("tokenExpired")
-                    if isinstance(event, events.CallbackQuery.Event):
-                        await event.answer(error_message, alert=True)
-                    else:
-                        await event.respond(error_message)
-                logger.warning(f"AuthenticationError in {func.__name__}: {e}", exc_info=True)
-                raise events.StopPropagation()
-
-            except (APIError, SeedrError) as e:
-                if translator:
-                    error_message = translator.get("somethingWrong")
-                    if isinstance(event, events.CallbackQuery.Event):
-                        await event.answer(error_message, alert=True)
-                    else:
-                        await event.respond(error_message)
-                logger.error(f"APIError/SeedrError in {func.__name__}: {e}", exc_info=True)
-                raise events.StopPropagation()
-
-            except errors.AlreadyInConversationError:
-                logger.warning(f"AlreadyInConversationError in {func.__name__}")
-                raise events.StopPropagation()
-
+                final_kwargs = await _inject_dependencies(func, event, user, translator, require_auth)
+                return await func(**final_kwargs)
             except Exception as e:
-                if translator:
-                    error_message = translator.get("somethingWrong")
-                    if isinstance(event, events.CallbackQuery.Event):
-                        await event.answer(error_message, alert=True)
-                    else:
-                        await event.respond(error_message)
-                logger.error(f"Unhandled exception in {func.__name__}: {e}", exc_info=True)
-                raise events.StopPropagation()
+                await _handle_exception(event, translator, e)
 
         return wrapper
 
