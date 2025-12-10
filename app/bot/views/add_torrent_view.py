@@ -27,11 +27,6 @@ def render_invalid_magnet_message(translator: Translator) -> ViewResponse:
     return ViewResponse(message=translator.get("invalidMagnet"))
 
 
-def render_wrong_torrent_file_message(translator: Translator) -> ViewResponse:
-    """Render the message for a wrong torrent file."""
-    return ViewResponse(message=translator.get("wrongTorrentFile"))
-
-
 def render_file_too_large_message(max_size: str, translator: Translator) -> ViewResponse:
     """Render the message for a file that is too large."""
     message = translator.get("fileTooLarge").format(max_size=max_size)

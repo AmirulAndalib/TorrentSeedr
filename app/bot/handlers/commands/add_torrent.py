@@ -6,7 +6,6 @@ from app.bot.views.add_torrent_view import (
     render_add_torrent_failure,
     render_add_torrent_success,
     render_file_too_large_message,
-    render_wrong_torrent_file_message,
 )
 from app.bot.views.shared_view import render_processing_message
 from app.config import settings
@@ -49,11 +48,6 @@ async def handle_torrent_file(
     seedr_client: AsyncSeedr,
 ):
     """Handle torrent file upload."""
-    if not event.message.document or not event.message.file.name.endswith(".torrent"):
-        view = render_wrong_torrent_file_message(translator)
-        await event.respond(view.message, buttons=view.buttons)
-        return
-
     # Check file size before downloading
     if event.message.file.size > settings.max_torrent_file_size:
         max_size_mb = format_size(settings.max_torrent_file_size)

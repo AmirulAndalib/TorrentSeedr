@@ -30,7 +30,7 @@ from app.bot.handlers.callbacks.navigation import file_callback, folder_callback
 from app.bot.handlers.callbacks.playlist import playlist_callback
 from app.bot.handlers.commands.accounts import accounts_handler
 from app.bot.handlers.commands.active import active_handler
-from app.bot.handlers.commands.add_torrent import add_torrent_handler
+from app.bot.handlers.commands.add_torrent import add_torrent_handler, handle_torrent_file
 from app.bot.handlers.commands.files import files_handler
 from app.bot.handlers.commands.info import info_handler
 from app.bot.handlers.commands.login import login_handler
@@ -92,6 +92,15 @@ async def main():
     # Callback handlers - Active Downloads
     bot.add_event_handler(active_download_callback, events.CallbackQuery(pattern=b"active_.*"))
     bot.add_event_handler(cancel_download_callback, events.CallbackQuery(pattern=b"cancel_download_.*"))
+
+    # File upload handler (must be before the text_message_handler)
+    bot.add_event_handler(
+        handle_torrent_file,
+        events.NewMessage(
+            func=lambda e: e.document
+            and (e.document.mime_type == "application/x-bittorrent" or e.file.name.endswith(".torrent"))
+        ),
+    )
 
     # This handler catches text button clicks and other text messages.
     bot.add_event_handler(text_message_handler, events.NewMessage(incoming=True))
