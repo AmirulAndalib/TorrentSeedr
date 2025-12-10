@@ -14,18 +14,19 @@ def render_playlist_message(
 ) -> ViewResponse:
     """Render the message for playlist file."""
     caption = translator.get("openInMediaCaption")
+    selected_emoji = translator.get("selectedOptionEmoji")
     buttons = [
         [
             Button.inline(
-                ("✅ " if playlist_type == "vlc" else "") + translator.get("vlcBtn"),
+                (selected_emoji if playlist_type == "vlc" else "") + translator.get("vlcBtn"),
                 f"playlist_vlc_{media_type}_{media_id_str}".encode(),
             ),
             Button.inline(
-                ("✅ " if playlist_type == "m3u" else "") + translator.get("m3uBtn"),
+                (selected_emoji if playlist_type == "m3u" else "") + translator.get("m3uBtn"),
                 f"playlist_m3u_{media_type}_{media_id_str}".encode(),
             ),
             Button.inline(
-                ("✅ " if playlist_type == "xspf" else "") + translator.get("xspfBtn"),
+                (selected_emoji if playlist_type == "xspf" else "") + translator.get("xspfBtn"),
                 f"playlist_xspf_{media_type}_{media_id_str}".encode(),
             ),
         ]
