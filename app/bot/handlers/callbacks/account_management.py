@@ -32,17 +32,17 @@ async def switch_account_callback(
         account_repo = AccountRepository(session)
         account_to_switch = await account_repo.get_by_id(account_id, user.id)
 
-        if not account_to_switch:
-            view = render_account_not_found(translator)
-            await event.edit(view.message, buttons=view.buttons)
-            return
+    if not account_to_switch:
+        view = render_account_not_found(translator)
+        await event.edit(view.message, buttons=view.buttons)
+        return
 
-        if user.default_account_id == account_id:
-            await event.answer(translator.get("alreadyActive"), alert=False)
-            return
+    if user.default_account_id == account_id:
+        await event.answer(translator.get("alreadyActive"), alert=False)
+        return
 
-        username = account_to_switch.username or account_to_switch.email
-        await user_repo.update_settings(event, user.id, default_account_id=account_to_switch.id)
+    username = account_to_switch.username or account_to_switch.email
+    await user_repo.update_settings(event, user.id, default_account_id=account_to_switch.id)
 
     await event.answer(translator.get("accountSwitched").format(username=username), alert=False)
     await accounts_handler(event)
