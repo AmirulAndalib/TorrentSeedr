@@ -105,15 +105,20 @@ def setup_handler(require_auth: bool = False):
     def decorator(func):
         @functools.wraps(func)
         async def wrapper(event: events.NewMessage.Event | events.CallbackQuery.Event, *args: Any, **kwargs: Any):
+            translator = None
             try:
-                async with get_session() as session:
-                    user = await UserRepository(session).get_or_create(event.sender_id)
-                    translator = language_service.get_translator(user.language)
+                user = kwargs.get("user")
+                if not user:
+                    async with get_session() as session:
+                        user = await UserRepository(session).get_or_create(event.sender_id)
+
+                translator = language_service.get_translator(user.language)
 
                 final_kwargs = await _inject_dependencies(func, event, user, translator, require_auth)
                 return await func(**final_kwargs)
-            except Exception as e:
-                await _handle_exception(event, translator, e)
+            except Exception as err:
+                translator = language_service.get_translator() if translator is None else translator
+                await _handle_exception(event, translator, err)
 
         return wrapper
 

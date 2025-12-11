@@ -17,7 +17,6 @@ from app.utils.language import Translator
 async def text_message_handler(event: events.NewMessage.Event, user: User, translator: Translator, **kwargs):
     """
     Handles text messages from reply keyboard buttons.
-    TODO: Db call on User is happening twice in a single request, optimize it.
     """
     text = event.message.text
 
@@ -34,4 +33,4 @@ async def text_message_handler(event: events.NewMessage.Event, user: User, trans
     handler = actions.get(text)
     if handler:
         # Call the respective handler
-        await handler(event)
+        await handler(event, user=user)
