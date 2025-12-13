@@ -110,7 +110,10 @@ def setup_handler(require_auth: bool = False):
                 user = kwargs.get("user")
                 if not user:
                     async with get_session() as session:
-                        user = await UserRepository(session).get_or_create(event.sender_id)
+                        username = event.sender.username if event.sender else None
+                        user = await UserRepository(session).get_or_create(
+                            telegram_id=event.sender_id, username=username
+                        )
 
                 translator = language_service.get_translator(user.language)
 
