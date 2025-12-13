@@ -39,6 +39,7 @@ from app.bot.handlers.messages.add_torrent import add_torrent_handler, handle_to
 from app.bot.handlers.messages.text_message import text_message_handler
 from app.config import settings
 from app.database import close_db, init_db
+from app.database.session import validate_encryption_key
 
 logger = get_logger(__name__)
 
@@ -50,6 +51,10 @@ async def main():
     # Initialize database
     logger.info("Initializing database")
     await init_db()
+
+    # Validate encryption key
+    logger.info("Validating encryption key")
+    await validate_encryption_key()
 
     # Start the bot
     logger.info("Connecting to Telegram")
