@@ -4,6 +4,12 @@ from app.bot.views import ViewResponse
 from app.utils.language import Translator
 
 
+def render_deleted_successfully_message(translator: Translator) -> ViewResponse:
+    """Render the message for successful deletion of file or folder."""
+    message = translator.get("deletedSuccessfully")
+    return ViewResponse(message=message)
+
+
 def render_failed_to_delete_file_message(translator: Translator) -> ViewResponse:
     """Render the message for failed file deletion."""
     message = translator.get("somethingWrong")
