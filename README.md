@@ -23,11 +23,11 @@ cd SeedrccBot
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
+```
 
 ### OR
 
 Check the [official uv installation guide](https://docs.astral.sh/uv/getting-started/installation) for more options.
-```
 
 ### 3. Configuration
 
