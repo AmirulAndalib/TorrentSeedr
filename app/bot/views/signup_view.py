@@ -14,5 +14,5 @@ def render_signup_message(translator: Translator) -> ViewResponse:
 
         {translator.get("signupMessage")}
     """)
-    buttons = [[Button.url(translator.get("signupBtn"), "https://www.seedr.cc")]]
+    buttons = [[Button.url(translator.get("createAccountBtn"), "https://www.seedr.cc")]]
     return ViewResponse(message=message.strip(), buttons=buttons)
