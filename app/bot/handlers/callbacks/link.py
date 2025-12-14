@@ -21,7 +21,6 @@ async def file_link_callback(
     file_id = str(int(event.data.decode().replace("file_link_", "")))
     result = await seedr_client.fetch_file(file_id)
     if result.url:
-        await event.answer(translator.get("fetchingLink"), alert=False)
         view = render_file_link_message(result, translator)
         await event.edit(view.message, buttons=view.buttons, link_preview=False)
     else:
@@ -37,7 +36,6 @@ async def folder_link_callback(
     folder_id = str(int(event.data.decode().replace("folder_link_", "")))
     result = await seedr_client.create_archive(folder_id)
     if result.archive_url:
-        await event.answer(translator.get("fetchingLink"), alert=False)
         view = render_folder_link_message(result.archive_url, translator)
         await event.edit(view.message, buttons=view.buttons, link_preview=False)
     else:
