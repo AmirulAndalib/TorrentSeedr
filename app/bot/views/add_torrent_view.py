@@ -1,4 +1,6 @@
-"""Views for add torrent messages."""
+"""Views for adding torrents."""
+
+from textwrap import dedent
 
 from app.bot.views import ViewResponse
 from app.utils.language import Translator
@@ -6,8 +8,12 @@ from app.utils.language import Translator
 
 def render_add_torrent_success(torrent_title: str, translator: Translator) -> ViewResponse:
     """Render the success message after adding a torrent."""
-    message = f"{translator.get('torrentAddedSuccessfully')}\n\n<b>{torrent_title}</b>"
-    return ViewResponse(message=message)
+    message = dedent(f"""
+        {translator.get("downloadAddedSuccessfully")}
+
+        <b>{torrent_title}</b>
+    """)
+    return ViewResponse(message=message.strip())
 
 
 def render_add_torrent_failure(translator: Translator) -> ViewResponse:

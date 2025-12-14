@@ -3,6 +3,8 @@ activeAccountEmoji: ✅
 audioEmoji: 🎵
 fileEmoji: 📄
 folderEmoji: 📁
+progressBarEmptyEmoji: ▢
+progressBarFilledEmoji: ▣
 selectedOptionEmoji: ✅
 videoEmoji: 🎬
 
@@ -14,6 +16,7 @@ activeDownloadsBtn: ⌛ Active Downloads
 authorizeWithDeviceBtn: 📱 Authorize with device (Recommended)
 backBtn: 🔙 Back
 cancelBtn: ❌ Cancel
+createAccountBtn: "🚀 Create a Free Account"
 deleteBtn: ⛔ Delete
 doneBtn: ✅ Done
 downloadFileBtn: ⬇️ Download File
@@ -29,7 +32,7 @@ nextBtn: Next ▶️
 noBtn: ❌ No
 playlistBtn: ▶️ Play
 previousBtn: ◀️ Previous
-signupBtn: 🚀 Sign up
+signupBtn: 📝 Sign up
 vlcBtn: VLC
 xspfBtn: XSPF
 yesBtn: ✅ Yes
@@ -60,9 +63,8 @@ yesLabel: yes
 
 ## Messages
 accountNotFound: ⚠️ Account not found.
-accountRemoved: ➖ Account removed successfully.
-accountSwitched: ✅ Switched to {username}.
-actionCannotBeUndoneLogout: "Note: This will only log you out of this bot, not delete your Seedr account. You can add the account again later."
+accountRemoved: ✅ Successfully logged out.
+accountSwitched: ✅ Switched to <b>{username}</b>.
 alreadyActive: ✅ This account is already active.
 authorize: |
   ️ <b>Please follow the instructions to authorize your account</b>
@@ -77,46 +79,48 @@ authorize: |
 cancelled: ❌ Cancelled
 cannotDetermineFolder: ⚠️ Could not determine the file's folder. Cannot show details.
 confirmLogout: ⚠️ Confirm Logout
-confirmLogoutAccount: "Are you sure you want to log out of the account: {username}?"
-conversationTimeout: Conversation timed out. Please try again.
+confirmLogoutAccount: "Are you sure you want to log out of <b>{username}</b>?"
+conversationTimeout: ⌛ Conversation timed out. Please try again.
 deletedSuccessfully: 🙌  The selected item is deleted successfully.
+downloadAddedSuccessfully: 🙌 Your download has been added to the queue.
 downloadCancelled: ✅ Download successfully cancelled.
 downloadNotFound: 🤷‍♂️ This download is no longer active. It may have been completed or cancelled.
 enterEmail: ✉️ Enter your account email address.
 enterPasswordFor: 🔑 Enter your account password for <b>{email}</b>.
 errorFetchingLink: 🔗 Could not fetch the download link.
 fileNotFound: ⚠️ File not found in the folder.
-fileTooLarge: ⚠️ The torrent file is too large. Please upload a file smaller than {max_size} MB.
-greet: 👋 Welcome to the seedr bot.
-incorrectPassword: ⚠️ The email and password do not match. Please try again.
+fileTooLarge: ⚠️ The file is too large. Please upload a file smaller than {max_size} MB.
+fileUploadNotSupported: ⚠️ File upload is not supported yet.
+greet: 👋 Welcome back! How can I help you today?
+incorrectPassword: ⚠️ Incorrect email or password. If the issue persists, try the <b>Authorize with device</b> method.
 invalidMagnet: 🧲 Invalid magnet link.
-loggedInAs: 💫 Successfully logged in as {username}.
+loggedInAs: 💫 Successfully logged in as <b>{username}</b>.
 loggingIn: ⟳ Logging in...
-loginMessage: Please choose a method to log in to your Seedr account.
-noAccount: ⚠️ You don't have any account logged in.
+loginMessage: Please choose a login method below.
+noAccount: ⚠️ You must log in to an account to use this feature.
 noActiveDownloads: 🤝 You don't have any active downloads.
 noFiles: 📂 There are no files in this folder.
 noPlayableMedia: ⚠️ This folder doesn't contain any playable media.
 openInMediaCaption: |
-  Click the icon above and the media shall start playing in your default player.
+  Open the file above to stream in your favorite media player (like VLC).
 
-  <code>Install VLC media player for better performance.</code>
-
-  <b>⚠️ If failed to play, please choose a different file extension by clicking the button below.</b>
+  <b>⚠️ If playback fails, try a different playlist format below.</b>
 pausedDownloadWarning: "⚠️ This download is paused, likely due to a lack of seeders. You can try adding a new torrent or retrying later."
 processing: ↻ Processing
 selectDownload: "Please select a download to view its progress"
-selectLanguage: "Please select your preferred language:"
 signupMessage: Click the button below to create a new Seedr account.
-somethingWrong: ⚠️ Something went wrong. Please try again later or contact the developer.
+somethingWrong: ⚠️ An unexpected error occurred. Please try again.
 storePasswordPrompt: |
-  <b>Do you want to store your password?</b>
+  <b>Save Password for Auto-Refresh?</b>
 
-  Storing your password will allow the bot to automatically refresh your account token if it expires. This is optional.
+  If your session expires, the bot can use your saved password to automatically log in again. Your password will be stored encrypted.
 tokenExpired: 😬 Your account token has expired. Please add your account again.
-torrentAddedSuccessfully: 🙌 The torrent is added successfully to the download queue.
-torrentFileUploadNotSupported: ⚠️ Torrent file upload is not supported yet.
-welcomeMessage: Welcome to the seedr bot! If you already have an account, please log in. If not, you can sign up.
+welcomeMessage: |
+  👋 Welcome to the <b>{bot_name}</b>!
+
+  This bot helps you manage your Seedr.cc account. You can add <b>download magnet links</b>, manage files, and <b>generate playlists</b> to stream media directly from Telegram.
+
+  Please log in or sign up to get started.
 
 ## Command Descriptions
 accountsCmdDesc: 🗂️ Manage your accounts
