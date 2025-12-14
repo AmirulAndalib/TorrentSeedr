@@ -8,7 +8,7 @@ from app.utils.language import Translator
 
 def render_start_message(has_accounts: bool, translator: Translator) -> ViewResponse:
     if has_accounts:
-        message = translator.get("greet")
+        message = translator.get("greet").format(bot_name=settings.bot_name)
     else:
         message = translator.get("welcomeMessage").format(bot_name=settings.bot_name)
 

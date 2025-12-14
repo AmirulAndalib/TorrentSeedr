@@ -91,7 +91,14 @@ errorFetchingLink: 🔗 Could not fetch the download link.
 fileNotFound: ⚠️ File not found in the folder.
 fileTooLarge: ⚠️ The file is too large. Please upload a file smaller than {max_size} MB.
 fileUploadNotSupported: ⚠️ File upload is not supported yet.
-greet: 👋 Welcome back! How can I help you today?
+greet: |
+  👋 Welcome back to the <b>{bot_name}</b>!
+
+  - 📥 Send a magnet link or upload a torrent file to start downloading.
+  - 🔍 Search and add torrents directly using <b>@TorrentHuntBot</b>.
+  - 📂 Browse and manage your cloud files.
+
+  Choose an option below to get started!
 incorrectPassword: ⚠️ Incorrect email or password. If the issue persists, try the <b>Authorize with device</b> method.
 invalidMagnet: 🧲 Invalid magnet link.
 loggedInAs: 💫 Successfully logged in as <b>{username}</b>.
