@@ -1,7 +1,9 @@
-"""Formatters for converting bytes, time, and creating progress bars."""
+"""Utility functions for formatting text, sizes, dates, and times."""
 
 import math
 from datetime import datetime
+
+from app.utils.language import Translator
 
 
 def format_date(dt: datetime | None) -> str:
@@ -12,14 +14,7 @@ def format_date(dt: datetime | None) -> str:
 
 
 def format_size(byte: int | float) -> str:
-    """Convert bytes into human-readable size.
-
-    Args:
-        byte: Size in bytes
-
-    Returns:
-        Formatted size string (e.g., "1.5 GB")
-    """
+    """Convert bytes into human-readable size."""
     if byte == 0:
         return "0B"
 
@@ -31,14 +26,7 @@ def format_size(byte: int | float) -> str:
 
 
 def format_time(seconds: int | float) -> str:
-    """Convert seconds into human-readable time.
-
-    Args:
-        seconds: Time in seconds
-
-    Returns:
-        Formatted time string (e.g., "1.5 Hrs")
-    """
+    """Convert seconds into human-readable time."""
     if seconds == 0:
         return "0 Sec"
 
@@ -49,17 +37,9 @@ def format_time(seconds: int | float) -> str:
     return f"{s} {size_name[i]}"
 
 
-def progress_bar(progress: float | int, length: int = 20) -> str:
-    """Create a progress bar visualization.
-
-    Args:
-        progress: Progress percentage (0-100)
-        length: Length of the progress bar (default: 20)
-
-    Returns:
-        Progress bar string with filled and empty blocks
-    """
+def progress_bar(progress: float | int, translator: Translator, length: int = 20) -> str:
+    """Create a progress bar visualization."""
     bars = int(float(progress)) // (100 // length)
-    filled = "\u25a3"  # ▣
-    empty = "\u25a2"  # ▢
+    filled = translator.get("progressBarFilledEmoji")
+    empty = translator.get("progressBarEmptyEmoji")
     return f"{filled * bars}{empty * (length - bars)}"

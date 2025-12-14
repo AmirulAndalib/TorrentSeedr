@@ -17,7 +17,7 @@ def render_download_status(download: Torrent, translator: Translator) -> ViewRes
     title = download.name.strip()
     downloaded_bytes = (progress / 100) * download.size if download.size else 0
 
-    progress_visual = progress_bar(progress)
+    progress_visual = progress_bar(progress, translator)
     downloaded = format_size(downloaded_bytes)
     size = format_size(download.size)
     download_rate = format_size(download.download_rate)

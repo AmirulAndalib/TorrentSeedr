@@ -19,7 +19,7 @@ def render_account_info(account_info: AccountInfo, translator: Translator) -> Vi
     referral_link = f"https://www.seedr.cc/?r={account_info.user_id}"
 
     progress = (space_used / space_max) * 100 if space_max > 0 else 0
-    space_bar_visual = progress_bar(progress)
+    space_bar_visual = progress_bar(progress, translator)
 
     message = dedent(f"""
         <b>{translator.get("accountInfoBtn")}</b>
