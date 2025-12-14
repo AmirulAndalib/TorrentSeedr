@@ -23,6 +23,10 @@ cd SeedrccBot
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
+
+### OR
+
+Check the [official uv installation guide](https://docs.astral.sh/uv/getting-started/installation) for more options.
 ```
 
 ### 3. Configuration
@@ -83,7 +87,7 @@ docker run --env-file .env -v $(pwd)/data:/app/data seedrccbot
 
 ## 🤝 Contributing
 
-Any contributions you make are **greatly appreciated**. Thank you to every contributor who has helped improve this project!
+Any contributions you make are **greatly appreciated**. Thank you to every [contributors](https://github.com/hemantapkh/seedrccbot/graphs/contributors) who have contributed in this project!
 
 ## 📜 License
 
