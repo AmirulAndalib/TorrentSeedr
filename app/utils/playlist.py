@@ -39,7 +39,7 @@ async def _recursive_get_tracks(seedr: AsyncSeedr, contents) -> list[dict]:
         if file.play_video or file.play_audio:
             result = await seedr.fetch_file(str(file.folder_file_id))
             if result.url:
-                safe_url = quote(result.url, safe=":/")
+                safe_url = quote(result.url, safe="/:&?=%")
                 tracks.append({"location": safe_url, "title": result.name})
 
     for folder in folders:
@@ -59,7 +59,7 @@ async def generate_file_playlist(
     if not result.url:
         return None
 
-    safe_url = quote(result.url, safe=":/")
+    safe_url = quote(result.url, safe="/:&?=%")
     tracks = [{"location": safe_url, "title": result.name}]
     playlist_content = generate_playlist_content(tracks, playlist_type, result.name)
 
@@ -85,4 +85,3 @@ async def generate_folder_playlist(
     with tempfile.NamedTemporaryFile(mode="wb", delete=False, suffix=f".{playlist_type}") as temp_f:
         temp_f.write(playlist_content)
         return PlaylistResult(file_path=temp_f.name, filename=f"{root_contents.name}.{playlist_type}")
-
