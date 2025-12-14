@@ -22,7 +22,7 @@ cd SeedrccBot
 ### 2. Install **uv**
 
 ```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
+curl -LsSf https://astral.sh/uv/install.sh | sh # Mac/Linux
 ```
 
 ### OR

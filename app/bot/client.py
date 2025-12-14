@@ -12,7 +12,7 @@ def create_bot() -> TelegramClient:
         TelegramClient: Configured Telethon client instance
     """
     bot = TelegramClient(
-        session=".telethon_authentication.session",
+        session="data/.telethon_authentication.session",
         api_id=settings.telegram_api_id,
         api_hash=settings.telegram_api_hash,
     )

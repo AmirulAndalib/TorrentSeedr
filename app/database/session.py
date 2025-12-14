@@ -12,6 +12,12 @@ from app.database.models.bot_config import BotConfig
 
 logger = get_logger(__name__)
 
+connection_string = (
+    settings.database_url.replace("sqlite://", "sqlite+aiosqlite://")
+    .replace("postgres://", "postgresql+asyncpg://")
+    .replace("postgresql://", "postgresql+asyncpg://")
+)
+
 # Create async engine
 engine = create_async_engine(
     settings.database_url,
