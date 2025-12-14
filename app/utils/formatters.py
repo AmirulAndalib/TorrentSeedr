@@ -63,24 +63,3 @@ def progress_bar(progress: float | int, length: int = 20) -> str:
     filled = "\u25a3"  # ▣
     empty = "\u25a2"  # ▢
     return f"{filled * bars}{empty * (length - bars)}"
-
-
-def space_bar(total_space: int | float, space_used: int | float, length: int = 20) -> str:
-    """Create a storage space usage bar.
-
-    Args:
-        total_space: Total available space in bytes
-        space_used: Used space in bytes
-        length: Length of the bar (default: 20)
-
-    Returns:
-        Space usage bar string
-    """
-    filled = "\u25a3"  # ▣
-    empty = "\u25a2"  # ▢
-
-    if total_space == 0:
-        return empty * length
-
-    bars = round((space_used / total_space) * length)
-    return f"{filled * bars}{empty * (length - bars)}"
