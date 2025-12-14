@@ -107,7 +107,7 @@ async def main():
         ),
     )
 
-    # This handler catches text button clicks and other events.
+    # This handler catches text button clicks and other text messages.
     bot.add_event_handler(text_message_handler, events.NewMessage(incoming=True))
 
     logger.info("Bot is running. Press Ctrl+C to stop.")
