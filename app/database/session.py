@@ -27,7 +27,7 @@ def make_async_db_url(db_url: str) -> str:
     if url.drivername in driver_map:
         url = url.set(drivername=driver_map[url.drivername])
 
-    return str(url)
+    return url.render_as_string(hide_password=False)
 
 
 # Create async engine
