@@ -111,9 +111,9 @@ selectDownload: "Please select a download to view its progress"
 signupMessage: Click the button below to create a new Seedr account.
 somethingWrong: ⚠️ An unexpected error occurred. Please try again.
 storePasswordPrompt: |
-  <b>Save Password for Auto-Refresh?</b>
+  <b>🔐 Save Password?</b>
 
-  If your session expires, the bot can use your saved password to automatically log in again. Your password will be stored encrypted.
+  We store your password encrypted on our server and use it only to automatically log you in when your session expires.
 tokenExpired: 😬 Your account token has expired. Please add your account again.
 welcomeMessage: |
   👋 Welcome to the <b>{bot_name}</b>!
