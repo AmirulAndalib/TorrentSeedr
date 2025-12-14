@@ -1,5 +1,7 @@
 """Views for login management."""
 
+from textwrap import dedent
+
 from telethon import Button
 
 from app.bot.views import ViewResponse
@@ -9,7 +11,11 @@ from app.utils.language import Translator
 
 def render_login_message(translator: Translator) -> ViewResponse:
     "Render view for /login"
-    message = translator.get("loginMessage")
+    message = dedent(f"""
+        <b>{translator.get("loginBtn")}</b>
+
+        {translator.get("loginMessage")}
+    """)
     buttons = [
         [
             Button.inline(
@@ -24,7 +30,7 @@ def render_login_message(translator: Translator) -> ViewResponse:
             )
         ],
     ]
-    return ViewResponse(message=message, buttons=buttons)
+    return ViewResponse(message=message.strip(), buttons=buttons)
 
 
 def render_enter_email(translator: Translator) -> ViewResponse:

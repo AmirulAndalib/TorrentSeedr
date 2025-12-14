@@ -1,5 +1,7 @@
 """Views for signup command."""
 
+from textwrap import dedent
+
 from telethon import Button
 
 from app.bot.views import ViewResponse
@@ -7,6 +9,10 @@ from app.utils.language import Translator
 
 
 def render_signup_message(translator: Translator) -> ViewResponse:
-    message = translator.get("signupMessage")
+    message = dedent(f"""
+        <b>{translator.get("signupBtn")}</b>
+
+        {translator.get("signupMessage")}
+    """)
     buttons = [[Button.url(translator.get("signupBtn"), "https://www.seedr.cc")]]
-    return ViewResponse(message=message, buttons=buttons)
+    return ViewResponse(message=message.strip(), buttons=buttons)
