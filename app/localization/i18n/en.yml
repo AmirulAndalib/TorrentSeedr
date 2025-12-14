@@ -118,9 +118,13 @@ tokenExpired: 😬 Your account token has expired. Please add your account again
 welcomeMessage: |
   👋 Welcome to the <b>{bot_name}</b>!
 
-  This bot helps you manage your Seedr.cc account. You can add <b>download magnet links</b>, manage files, and <b>generate playlists</b> to stream media directly from Telegram.
+  By using this bot, you can manage your Seedr account directly from Telegram.
 
-  Please log in or sign up to get started.
+  - 📥 Add magnet links to download files
+  - 📂 Browse and manage your cloud storage
+  - ▶️ Generate playlists to stream media
+
+  To get started, please <b>Log In</b> to an existing account or <b>Sign Up</b> for a new one.
 
 ## Command Descriptions
 accountsCmdDesc: 🗂️ Manage your accounts
@@ -130,4 +134,3 @@ infoCmdDesc: ℹ️ Get account information
 loginCmdDesc: ➕ Log in to an account
 signupCmdDesc: 🚀 Create a new account
 startCmdDesc: 👋 Start the bot
-

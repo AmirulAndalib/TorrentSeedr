@@ -8,8 +8,8 @@ from app.bot.handlers.commands.accounts import accounts_handler
 from app.bot.views.accounts_view import (
     render_account_not_found,
     render_logout_account_confirmation,
-    render_no_account,
 )
+from app.bot.views.start_view import render_start_message
 from app.database import get_session
 from app.database.models import User
 from app.database.repository import AccountRepository, UserRepository
@@ -111,7 +111,7 @@ async def confirm_logout_account_callback(
     if has_multiple_accounts:
         await accounts_handler(event)
     else:
-        view = render_no_account(translator)
+        view = render_start_message(False, translator)
         await event.edit(view.message, buttons=view.buttons)
 
 
