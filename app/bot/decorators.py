@@ -117,8 +117,12 @@ def setup_handler(require_auth: bool = False):
 
                 translator = language_service.get_translator(user.language)
 
-                final_kwargs = await _inject_dependencies(func, event, user, translator, require_auth)
-                return await func(**final_kwargs)
+                injected_kwargs = await _inject_dependencies(func, event, user, translator, require_auth)
+
+                # Merge original kwargs with injected dependencies (injected takes precedence)
+                final_kwargs = {**kwargs, **injected_kwargs}
+
+                return await func(*args, **final_kwargs)
             except Exception as err:
                 translator = language_service.get_translator() if translator is None else translator
                 await _handle_exception(event, translator, err)
