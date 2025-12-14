@@ -27,6 +27,7 @@ async def login_email_callback(event: events.CallbackQuery.Event, user: User, tr
     has_accounts = bool(user.default_account_id)
     try:
         async with bot.conversation(user.telegram_id, timeout=300) as conv:
+            await event.delete()
             # Prompt for email address
             email = await ask(conv, render_enter_email(translator), translator, has_accounts)
 
@@ -76,6 +77,4 @@ async def login_email_callback(event: events.CallbackQuery.Event, user: User, tr
         await event.respond(translator.get("conversationTimeout"))
     except AuthenticationError:
         view = render_incorrect_password(translator, has_accounts=has_accounts)
-        await event.respond(view.message, buttons=view.buttons)
-    finally:
-        await event.delete()
+        await status_message.edit(view.message, buttons=view.buttons)
