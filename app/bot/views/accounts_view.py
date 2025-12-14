@@ -47,8 +47,6 @@ def render_logout_account_confirmation(account_id: int, username: str, translato
         <b>{translator.get("confirmLogout")}</b>
 
         {translator.get("confirmLogoutAccount").format(username=username)}
-
-        {translator.get("actionCannotBeUndoneLogout")}
     """)
     buttons = [
         [
