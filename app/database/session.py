@@ -3,6 +3,7 @@
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 
+from sqlalchemy.engine.url import make_url
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from structlog import get_logger
 
@@ -12,15 +13,26 @@ from app.database.models.bot_config import BotConfig
 
 logger = get_logger(__name__)
 
-connection_string = (
-    settings.database_url.replace("sqlite://", "sqlite+aiosqlite://")
-    .replace("postgres://", "postgresql+asyncpg://")
-    .replace("postgresql://", "postgresql+asyncpg://")
-)
+
+def make_async_db_url(db_url: str) -> str:
+    """Converts a DB URL to URL with SQLAlchemy async engines."""
+    url = make_url(db_url)
+
+    driver_map = {
+        "sqlite": "sqlite+aiosqlite",
+        "postgresql": "postgresql+asyncpg",
+        "postgres": "postgresql+asyncpg",
+    }
+
+    if url.drivername in driver_map:
+        url = url.set(drivername=driver_map[url.drivername])
+
+    return str(url)
+
 
 # Create async engine
 engine = create_async_engine(
-    settings.database_url,
+    make_async_db_url(settings.database_url),
     echo=False,
     future=True,
 )

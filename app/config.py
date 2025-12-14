@@ -22,7 +22,7 @@ class Settings(BaseSettings):
 
     # Database Configuration
     database_url: str = Field(
-        default="sqlite+aiosqlite:///data/seedrccbot.sqlite",
+        default="sqlite:///data/seedrccbot.sqlite",
         description="Database connection URL",
     )
 
