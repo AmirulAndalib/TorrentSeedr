@@ -2,7 +2,7 @@
 
 Telegram bot to manage your Seedr.cc account directly within Telegram.
 
-## ✨ Features
+## 🌟 Features
 
 - Supports **most Seedr.cc features** directly within Telegram.
 - **Multiple account support** for separate accounts.
@@ -93,7 +93,6 @@ Any contributions you make are **greatly appreciated**. Thank you to every [cont
 
 Distributed under the **MIT License**. See `LICENSE` for more information.
 
-## ✍️ Author/Maintainer
+---
 
-**[Hemanta Pokharel](https://hemantapkh.com)**
-
+Made with ❤️ by [Hemanta Pokharel](https://github.com/hemantapkh) using [Telethon](https://github.com/LonamiWebs/Telethon) and [seedrcc](https://github.com/hemantapkh/seedrcc)
