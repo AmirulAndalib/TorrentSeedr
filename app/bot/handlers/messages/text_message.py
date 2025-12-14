@@ -9,6 +9,7 @@ from app.bot.handlers.commands.files import files_handler
 from app.bot.handlers.commands.info import info_handler
 from app.bot.handlers.commands.login import login_handler
 from app.bot.handlers.commands.signup import signup_handler
+from app.bot.handlers.commands.start import start_handler
 from app.database.models import User
 from app.utils.language import Translator
 
@@ -34,3 +35,5 @@ async def text_message_handler(event: events.NewMessage.Event, user: User, trans
     if handler:
         # Call the respective handler
         await handler(event, user=user)
+    else:
+        await start_handler(event, user=user, translator=translator)
