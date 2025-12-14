@@ -16,12 +16,6 @@ def render_add_torrent_failure(translator: Translator) -> ViewResponse:
     return ViewResponse(message=message)
 
 
-def render_torrent_file_upload_not_supported(translator: Translator) -> ViewResponse:
-    """Render message for unsupported torrent file upload."""
-    message = translator.get("torrentFileUploadNotSupported")
-    return ViewResponse(message=message)
-
-
 def render_invalid_magnet_message(translator: Translator) -> ViewResponse:
     """Render the message for an invalid magnet link."""
     return ViewResponse(message=translator.get("invalidMagnet"))
