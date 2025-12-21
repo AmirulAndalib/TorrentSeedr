@@ -6,7 +6,7 @@ from app.bot.views import ViewResponse
 from app.utils.language import Translator
 
 
-def render_add_torrent_success(torrent_title: str, translator: Translator) -> ViewResponse:
+def render_add_torrent_success(translator: Translator, torrent_title: str | None = "") -> ViewResponse:
     """Render the success message after adding a torrent."""
     message = dedent(f"""
         {translator.get("downloadAddedSuccessfully")}
@@ -16,9 +16,15 @@ def render_add_torrent_success(torrent_title: str, translator: Translator) -> Vi
     return ViewResponse(message=message.strip())
 
 
-def render_add_torrent_failure(translator: Translator) -> ViewResponse:
-    """Render the failure message after adding a torrent."""
-    message = translator.get("somethingWrong")
+def render_item_already_in_queue(translator: Translator) -> ViewResponse:
+    """Render the message when item is already in the download queue."""
+    message = translator.get("downloadAlreadyInQueue")
+    return ViewResponse(message=message)
+
+
+def render_queue_full_added_to_wishlist(translator: Translator) -> ViewResponse:
+    """Render the message when queue is full and the item is added to wishlist."""
+    message = translator.get("downloadAddedToWishlist")
     return ViewResponse(message=message)
 
 

@@ -25,7 +25,8 @@ def render_download_status(download: Torrent, translator: Translator) -> ViewRes
 
     message = dedent(f"""
         <b>{translator.get("activeDownloadsBtn")}</b>
-        <b>{"\n" + title if title else ""}</b>
+
+        <b>{title if title else ""}</b>
         <b>{translator.get("speedLabel")}</b> {download_rate}/s
         <b>{translator.get("seedersLabel")}</b> {download.seeders}
         <b>{translator.get("leechersLabel")}</b> {download.leechers}

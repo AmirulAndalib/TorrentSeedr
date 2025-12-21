@@ -5,9 +5,9 @@ from telethon import events
 
 from app.bot.decorators import setup_handler
 from app.bot.views.status_view import (
+    render_deleted_successfully_message,
     render_failed_to_delete_file_message,
     render_failed_to_delete_folder_message,
-    render_deleted_successfully_message,
 )
 from app.database.models import User
 from app.utils.language import Translator

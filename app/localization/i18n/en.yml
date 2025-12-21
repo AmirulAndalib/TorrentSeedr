@@ -83,6 +83,11 @@ confirmLogoutAccount: "Are you sure you want to log out of <b>{username}</b>?"
 conversationTimeout: ⌛ Conversation timed out. Please try again.
 deletedSuccessfully: 🙌  The selected item is deleted successfully.
 downloadAddedSuccessfully: 🙌 Your download has been added to the queue.
+downloadAlreadyInQueue: ℹ️ This item is already in your download queue.
+downloadAddedToWishlist: |
+  ⚠️ <b>Your download queue is full.</b>
+
+  Please wait for an active download to complete or cancel one to continue.
 downloadCancelled: ✅ Download successfully cancelled.
 downloadNotFound: 🤷‍♂️ This download is no longer active. It may have been completed or cancelled.
 enterEmail: ✉️ Enter your account email address.
