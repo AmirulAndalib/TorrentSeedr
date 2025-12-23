@@ -25,7 +25,15 @@ def render_item_already_in_queue(translator: Translator) -> ViewResponse:
 def render_queue_full_added_to_wishlist(translator: Translator) -> ViewResponse:
     """Render the message when queue is full and the item is added to wishlist."""
     message = translator.get("downloadAddedToWishlist")
-    return ViewResponse(message=message)
+    buttons = [[(translator.get("upgradeToPremiumBtn"), "https://www.seedr.cc/subscription", "url")]]
+    return ViewResponse(message=message, buttons=buttons)
+
+
+def render_not_enough_space_added_to_wishlist(translator: Translator) -> ViewResponse:
+    """Render the message when there is not enough space and the item is added to wishlist."""
+    message = translator.get("notEnoughSpaceAddedToWishlist")
+    buttons = [[(translator.get("upgradeToPremiumBtn"), "https://www.seedr.cc/subscription", "url")]]
+    return ViewResponse(message=message, buttons=buttons)
 
 
 def render_invalid_magnet_message(translator: Translator) -> ViewResponse:

@@ -35,6 +35,7 @@ previousBtn: ◀️ Previous
 signupBtn: 📝 Sign up
 vlcBtn: VLC
 xspfBtn: XSPF
+upgradeToPremiumBtn: ⚡ Upgrade to Premium
 yesBtn: ✅ Yes
 
 ## Labels
@@ -113,6 +114,10 @@ noAccount: ⚠️ You must log in to an account to use this feature.
 noActiveDownloads: 🤝 You don't have any active downloads.
 noFiles: 📂 There are no files in this folder.
 noPlayableMedia: ⚠️ This folder doesn't contain any playable media.
+notEnoughSpaceAddedToWishlist: |
+  ⚠️ <b>Not enough space for this item.</b>
+
+  Please delete existing items, try a smaller item, or upgrade your account for more space.
 openInMediaCaption: |
   Open the file above to stream in your favorite media player (like VLC).
 

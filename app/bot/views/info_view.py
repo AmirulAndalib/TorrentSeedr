@@ -3,6 +3,8 @@
 from textwrap import dedent
 
 from seedrcc.models import AccountInfo
+from telethon import Button
+
 
 from app.bot.views import ViewResponse
 from app.utils import format_size, progress_bar
@@ -34,4 +36,9 @@ def render_account_info(account_info: AccountInfo, translator: Translator) -> Vi
         {space_bar_visual}
     """)
 
-    return ViewResponse(message=message.strip())
+    buttons = []
+
+    if not account_info.premium:
+        buttons.append([Button.url(translator.get("upgradeToPremiumBtn"), "https://www.seedr.cc/subscription")])
+
+    return ViewResponse(message=message.strip(), buttons=buttons)

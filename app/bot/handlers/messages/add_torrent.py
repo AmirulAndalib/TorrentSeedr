@@ -10,6 +10,7 @@ from app.bot.views.add_torrent_view import (
     render_file_too_large_message,
     render_invalid_magnet_message,
     render_item_already_in_queue,
+    render_not_enough_space_added_to_wishlist,
     render_queue_full_added_to_wishlist,
 )
 from app.bot.views.shared_view import render_processing_message
@@ -47,6 +48,9 @@ async def add_torrent_handler(
     except seedrcc.exceptions.APIError as err:
         if err.error_type == "queue_full_added_to_wishlist":
             view = render_queue_full_added_to_wishlist(translator)
+            await status_message.edit(view.message, buttons=view.buttons)
+        elif err.error_type == "not_enough_space_added_to_wishlist":
+            view = render_not_enough_space_added_to_wishlist(translator)
             await status_message.edit(view.message, buttons=view.buttons)
         elif err.error_type == "parsing_error":
             view = render_invalid_magnet_message(translator)
@@ -87,6 +91,9 @@ async def handle_torrent_file(
     except seedrcc.exceptions.APIError as err:
         if err.error_type == "queue_full_added_to_wishlist":
             view = render_queue_full_added_to_wishlist(translator)
+            await status_message.edit(view.message, buttons=view.buttons)
+        elif err.error_type == "not_enough_space_added_to_wishlist":
+            view = render_not_enough_space_added_to_wishlist(translator)
             await status_message.edit(view.message, buttons=view.buttons)
         elif err.error_type == "parsing_error":
             view = render_invalid_magnet_message(translator)
