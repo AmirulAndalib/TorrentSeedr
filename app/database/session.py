@@ -33,6 +33,11 @@ def make_async_db_url(db_url: str) -> str:
 # Create async engine
 engine = create_async_engine(
     make_async_db_url(settings.database_url),
+    pool_size=20,
+    max_overflow=30,
+    pool_timeout=10,
+    pool_recycle=1800,
+    pool_pre_ping=True,
     echo=False,
     future=True,
 )
