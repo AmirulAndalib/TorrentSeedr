@@ -13,7 +13,7 @@ from app.utils.language import Translator
 def render_download_status(download: Torrent, translator: Translator) -> ViewResponse:
     """Renders the detailed progress message for a single download."""
 
-    progress = int(download.progress)
+    progress = int(float(download.progress))
     title = download.name.strip()
     downloaded_bytes = (progress / 100) * download.size if download.size else 0
 
