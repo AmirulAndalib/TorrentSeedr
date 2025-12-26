@@ -28,7 +28,6 @@ async def switch_account_callback(
     account_id = int(callback_data.replace("switch_account_", ""))
 
     async with get_session() as session:
-        user_repo = UserRepository(session)
         account_repo = AccountRepository(session)
         account_to_switch = await account_repo.get_by_id(account_id, user.id)
 
@@ -41,9 +40,11 @@ async def switch_account_callback(
         await event.answer(translator.get("alreadyActive"), alert=False)
         return
 
-    username = account_to_switch.username or account_to_switch.email
-    await user_repo.update_settings(event, user.id, default_account_id=account_to_switch.id)
+    async with get_session() as session:
+        user_repo = UserRepository(session)
+        await user_repo.update_settings(event, user.id, default_account_id=account_to_switch.id)
 
+    username = account_to_switch.username or account_to_switch.email
     await event.answer(translator.get("accountSwitched").format(username=username), alert=False)
     await accounts_handler(event)
 
@@ -60,14 +61,14 @@ async def logout_account_callback(
         account_repo = AccountRepository(session)
         account = await account_repo.get_by_id(account_id, user.id)
 
-        if not account:
-            view = render_account_not_found(translator)
-            await event.edit(view.message, buttons=view.buttons)
-            return
-
-        username = account.username or account.email or ""
-        view = render_logout_account_confirmation(account_id, username, translator)
+    if not account:
+        view = render_account_not_found(translator)
         await event.edit(view.message, buttons=view.buttons)
+        return
+
+    username = account.username or account.email or ""
+    view = render_logout_account_confirmation(account_id, username, translator)
+    await event.edit(view.message, buttons=view.buttons)
 
 
 @setup_handler(require_auth=True)
@@ -78,37 +79,36 @@ async def confirm_logout_account_callback(
     callback_data = event.data.decode()
     account_id = int(callback_data.replace("confirm_logout_", ""))
 
+    account_not_found = False
+    has_remaining_accounts = False
+
     async with get_session() as session:
         account_repo = AccountRepository(session)
-        account = await account_repo.get_by_id(account_id, user.id)
-
-        if not account:
-            view = render_account_not_found(translator)
-            await event.edit(view.message, buttons=view.buttons)
-            return
-
         user_repo = UserRepository(session)
 
-        # Get all accounts before deletion
-        accounts = await account_repo.get_by_user_id(user.id)
-        has_multiple_accounts = len(accounts) >= 2
+        account = await account_repo.get_by_id(account_id, user.id)
+        if not account:
+            account_not_found = True
+        else:
+            await account_repo.delete(account_id, user.id)
 
-        # Delete the account
-        await account_repo.delete(account_id, user.id)
+            # Get remaining accounts after deletion
+            remaining = await account_repo.get_by_user_id(user.id)
+            has_remaining_accounts = len(remaining) > 0
 
-        # Update default account if the deleted account was the default
-        if user.default_account_id == account_id:
-            if has_multiple_accounts:
-                new_default = next((acc for acc in accounts if acc.id != account_id), None)
-                if new_default:
-                    await user_repo.update_settings(event, user.id, default_account_id=new_default.id)
-            else:
-                # Only one account (being deleted), set to None
-                await user_repo.update_settings(event, user.id, default_account_id=None)
+            # If the deleted account was the default, switch to another or None
+            if user.default_account_id == account_id:
+                new_default = remaining[0].id if remaining else None
+                await user_repo.update_settings(event, user.id, default_account_id=new_default)
+
+    if account_not_found:
+        view = render_account_not_found(translator)
+        await event.edit(view.message, buttons=view.buttons)
+        return
 
     await event.answer(translator.get("accountRemoved"), alert=False)
 
-    if has_multiple_accounts:
+    if has_remaining_accounts:
         await accounts_handler(event)
     else:
         view = render_start_message(False, translator)
