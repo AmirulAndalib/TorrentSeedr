@@ -23,11 +23,9 @@ async def accounts_handler(
         account_repo = AccountRepository(session)
         accounts = await account_repo.get_by_user_id(user.id)
 
-        default_account_id = user.default_account_id
+    view = render_accounts_message(accounts, user.default_account_id, translator)
 
-        view = render_accounts_message(accounts, default_account_id, translator)
-
-        if is_callback:
-            await event.edit(view.message, buttons=view.buttons)
-        else:
-            await event.respond(view.message, buttons=view.buttons)
+    if is_callback:
+        await event.edit(view.message, buttons=view.buttons)
+    else:
+        await event.respond(view.message, buttons=view.buttons)

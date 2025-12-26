@@ -39,18 +39,19 @@ async def _inject_dependencies(
     }
 
     if require_auth:
+        if not user.default_account_id:
+            raise NoAccountError()
+
         async with get_session() as session:
-            if not user.default_account_id:
-                raise NoAccountError()
-
             account = await AccountRepository(session).get_by_id(user.default_account_id, user.id)
-            if not account:
-                raise NoAccountError()
 
-            token_instance = Token.from_base64(account.token)
-            callback = functools.partial(on_token_refresh, account_id=account.id, user_id=user.id)
-            seedr_client = AsyncSeedr(token=token_instance, on_token_refresh=callback)
-            dependencies["seedr_client"] = seedr_client
+        if not account:
+            raise NoAccountError()
+
+        token_instance = Token.from_base64(account.token)
+        callback = functools.partial(on_token_refresh, account_id=account.id, user_id=user.id)
+        seedr_client = AsyncSeedr(token=token_instance, on_token_refresh=callback)
+        dependencies["seedr_client"] = seedr_client
 
     handler_signature = inspect.signature(func)
     return {key: value for key, value in dependencies.items() if key in handler_signature.parameters}
@@ -109,8 +110,8 @@ def setup_handler(require_auth: bool = False):
             try:
                 user = kwargs.get("user")
                 if not user:
+                    username = event.sender.username if event.sender else None
                     async with get_session() as session:
-                        username = event.sender.username if event.sender else None
                         user = await UserRepository(session).get_or_create(
                             telegram_id=event.sender_id, username=username
                         )
